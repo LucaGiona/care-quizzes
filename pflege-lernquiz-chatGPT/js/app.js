@@ -97,7 +97,10 @@ function normalizeTerms(terms, subject) {
     subcategory: term.kategorie,
     sourceKind: "term",
     originalMode: null,
-    question: `Wie lautet der Fachbegriff für „${term.de}“?`,
+    de: term.de,
+    fachbegriff: term.fachbegriff,
+    alternatives: term.alternativen ?? [],
+    question: "",
     correctAnswer: term.fachbegriff,
     acceptedAnswers: [
       term.fachbegriff,
@@ -233,14 +236,38 @@ function getFilteredQuestions() {
 }
 
 function createQuizQuestion(question, mode, availableQuestions) {
-  return {
+  const quizQuestion = {
     ...question,
-    mode,
-    options:
-      mode === "multiple-choice"
-        ? createAnswerOptions(question, availableQuestions)
-        : []
+    mode
   };
+
+  if (question.sourceKind === "term") {
+    const answerDirection =
+      Math.random() < 0.5 ? "fachbegriff" : "deutsch";
+
+    quizQuestion.answerDirection = answerDirection;
+
+    if (answerDirection === "fachbegriff") {
+      quizQuestion.question =
+        `Wie lautet der Fachbegriff für „${question.de}“?`;
+      quizQuestion.correctAnswer = question.fachbegriff;
+      quizQuestion.acceptedAnswers = [
+        question.fachbegriff,
+        ...question.alternatives
+      ];
+    } else {
+      quizQuestion.question = `Was bedeutet „${question.fachbegriff}“?`;
+      quizQuestion.correctAnswer = question.de;
+      quizQuestion.acceptedAnswers = [question.de];
+    }
+  }
+
+  quizQuestion.options =
+    mode === "multiple-choice"
+      ? createAnswerOptions(quizQuestion, availableQuestions)
+      : [];
+
+  return quizQuestion;
 }
 
 function createAnswerOptions(correctQuestion, availableQuestions) {
@@ -248,7 +275,18 @@ function createAnswerOptions(correctQuestion, availableQuestions) {
     return shuffleArray([...correctQuestion.predefinedOptions]);
   }
 
-  const sameSubjectAndGroup = availableQuestions.filter((question) => {
+  const isTermQuestion = correctQuestion.sourceKind === "term";
+  const answerField =
+    correctQuestion.answerDirection === "deutsch"
+      ? "de"
+      : "fachbegriff";
+  const eligibleQuestions = isTermQuestion
+    ? availableQuestions.filter((question) => {
+        return question.sourceKind === "term";
+      })
+    : availableQuestions;
+
+  const sameSubjectAndGroup = eligibleQuestions.filter((question) => {
     return (
       question.subject === correctQuestion.subject &&
       question.group === correctQuestion.group &&
@@ -256,29 +294,37 @@ function createAnswerOptions(correctQuestion, availableQuestions) {
     );
   });
 
-  const sameGroup = availableQuestions.filter((question) => {
+  const sameGroup = eligibleQuestions.filter((question) => {
     return (
       question.group === correctQuestion.group &&
       question.uid !== correctQuestion.uid
     );
   });
 
-  const fallback = availableQuestions.filter((question) => {
+  const sameSubject = eligibleQuestions.filter((question) => {
+    return (
+      question.subject === correctQuestion.subject &&
+      question.uid !== correctQuestion.uid
+    );
+  });
+
+  const fallback = eligibleQuestions.filter((question) => {
     return question.uid !== correctQuestion.uid;
   });
 
-  let answerPool = sameSubjectAndGroup;
+  const answerPool = [
+    ...shuffleArray(sameSubjectAndGroup),
+    ...shuffleArray(sameSubject),
+    ...shuffleArray(sameGroup),
+    ...shuffleArray(fallback)
+  ];
 
-  if (answerPool.length < 3) {
-    answerPool = sameGroup;
-  }
-
-  if (answerPool.length < 3) {
-    answerPool = fallback;
-  }
-
-  const wrongAnswers = shuffleArray(answerPool)
-    .map((question) => question.correctAnswer)
+  const wrongAnswers = answerPool
+    .map((question) => {
+      return isTermQuestion
+        ? question[answerField]
+        : question.correctAnswer;
+    })
     .filter(Boolean)
     .filter((answer) => {
       return normalizeAnswer(answer) !==
@@ -317,7 +363,9 @@ function startQuiz() {
     return createQuizQuestion(
       question,
       mode,
-      filteredQuestions
+      question.sourceKind === "term"
+        ? allQuestions
+        : filteredQuestions
     );
   });
 
