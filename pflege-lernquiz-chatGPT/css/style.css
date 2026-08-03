@@ -121,12 +121,16 @@ h2 {
 
 .topic-buttons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 10px;
   padding: 6px;
   background: var(--surface-soft);
   border: 1px solid var(--border);
   border-radius: var(--radius-medium);
+}
+
+.topic-button--sturz {
+  overflow-wrap: anywhere;
 }
 
 .topic-button {

@@ -29,7 +29,19 @@ const GROUP_LABELS = {
   pflegeversicherung: "Pflegeversicherung",
   pflegegrade: "Pflegegrade",
   leistungen: "Leistungen",
-  entlassungsmanagement: "Entlassungsmanagement"
+  entlassungsmanagement: "Entlassungsmanagement",
+  risikofaktoren: "Risikofaktoren",
+  einschaetzung: "Einschätzung",
+  beratung: "Beratung",
+  mobilitaet: "Mobilität",
+  umgebung: "Umgebung",
+  hilfsmittel: "Hilfsmittel",
+  medikation: "Medikation",
+  alltag: "Alltag",
+  nach_sturz: "Nach einem Sturz",
+  grundsaetze: "Grundsätze",
+  umgang_hoerbeeintraechtigung: "Umgang mit Hörbeeinträchtigung",
+  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung"
 };
 
 const TOPIC_LABELS = {
@@ -37,6 +49,7 @@ const TOPIC_LABELS = {
   ohr: "Ohr",
   sinnesorgane: "Auge & Ohr",
   pflege: "Pflegeversicherung",
+  sturz: "Sturzprophylaxe",
   alle: "Alle Themen"
 };
 
@@ -49,26 +62,50 @@ let answerChecked = false;
 
 async function loadQuizData() {
   try {
-    const [eyeResponse, earResponse, careResponse] = await Promise.all([
+    const [
+      eyeResponse,
+      earResponse,
+      careResponse,
+      fallPreventionResponse,
+      goldenRulesResponse
+    ] = await Promise.all([
       fetch("./data/auge.json"),
       fetch("./data/ohr.json"),
-      fetch("./data/pflegeversicherung.json")
+      fetch("./data/pflegeversicherung.json"),
+      fetch("./data/sturzprophylaxe.json"),
+      fetch("./data/goldene_regeln.json")
     ]);
 
-    if (!eyeResponse.ok || !earResponse.ok || !careResponse.ok) {
+    if (
+      !eyeResponse.ok ||
+      !earResponse.ok ||
+      !careResponse.ok ||
+      !fallPreventionResponse.ok ||
+      !goldenRulesResponse.ok
+    ) {
       throw new Error("Die Quizdaten konnten nicht vollständig geladen werden.");
     }
 
-    const [eyeTerms, earTerms, careQuestions] = await Promise.all([
+    const [
+      eyeTerms,
+      earTerms,
+      careQuestions,
+      fallPreventionQuestions,
+      goldenRuleQuestions
+    ] = await Promise.all([
       eyeResponse.json(),
       earResponse.json(),
-      careResponse.json()
+      careResponse.json(),
+      fallPreventionResponse.json(),
+      goldenRulesResponse.json()
     ]);
 
     allQuestions = [
       ...normalizeTerms(eyeTerms, "auge"),
       ...normalizeTerms(earTerms, "ohr"),
-      ...normalizeCareQuestions(careQuestions)
+      ...normalizeCareQuestions(careQuestions),
+      ...normalizeKnowledgeQuestions(fallPreventionQuestions, "sturz"),
+      ...normalizeGoldenRuleQuestions(goldenRuleQuestions)
     ];
 
     startButton.disabled = false;
@@ -113,14 +150,37 @@ function normalizeTerms(terms, subject) {
 }
 
 function normalizeCareQuestions(questions) {
+  return normalizeKnowledgeQuestions(questions, "pflege");
+}
+
+function normalizeGoldenRuleQuestions(questions) {
+  return questions.flatMap((question) => {
+    if (question.bereich !== "auge" && question.bereich !== "ohr") {
+      console.warn("Unbekannter Bereich in goldene_regeln.json", question);
+      return [];
+    }
+
+    return normalizeKnowledgeQuestions(
+      [question],
+      question.bereich,
+      `goldene-regeln-${question.bereich}`
+    );
+  });
+}
+
+function normalizeKnowledgeQuestions(
+  questions,
+  subject,
+  uidNamespace = subject
+) {
   return questions.map((question) => {
     const acceptedAnswers =
       question.akzeptierteAntworten ??
       (question.richtigeAntwort ? [question.richtigeAntwort] : []);
 
     return {
-      uid: `pflege-${question.id}`,
-      subject: "pflege",
+      uid: `${uidNamespace}-${question.id}`,
+      subject,
       group: question.thema,
       subcategory: question.kategorie,
       sourceKind: "knowledge",
@@ -151,22 +211,65 @@ function selectTopic(topic) {
 }
 
 function updateCategoryOptions() {
-  const eyeAndEarGroups = ["anatomie", "erkrankung"];
+  const eyeGroups = [
+    "anatomie",
+    "erkrankung",
+    "umgang_sehbeeintraechtigung"
+  ];
+  const earGroups = [
+    "anatomie",
+    "erkrankung",
+    "umgang_hoerbeeintraechtigung"
+  ];
+  const sensoryOrganGroups = [
+    "anatomie",
+    "erkrankung",
+    "umgang_sehbeeintraechtigung",
+    "umgang_hoerbeeintraechtigung"
+  ];
   const careGroups = [
     "pflegeversicherung",
     "pflegegrade",
     "leistungen",
     "entlassungsmanagement"
   ];
+  const fallPreventionGroups = [
+    "risikofaktoren",
+    "einschaetzung",
+    "beratung",
+    "mobilitaet",
+    "umgebung",
+    "hilfsmittel",
+    "medikation",
+    "alltag",
+    "nach_sturz",
+    "grundsaetze"
+  ];
 
-  let groups = eyeAndEarGroups;
+  let groups = eyeGroups;
+
+  if (selectedTopic === "ohr") {
+    groups = earGroups;
+  }
+
+  if (selectedTopic === "sinnesorgane") {
+    groups = sensoryOrganGroups;
+  }
 
   if (selectedTopic === "pflege") {
     groups = careGroups;
   }
 
+  if (selectedTopic === "sturz") {
+    groups = fallPreventionGroups;
+  }
+
   if (selectedTopic === "alle") {
-    groups = [...eyeAndEarGroups, ...careGroups];
+    groups = [
+      ...sensoryOrganGroups,
+      ...careGroups,
+      ...fallPreventionGroups
+    ];
   }
 
   categorySelect.innerHTML = "";
@@ -413,6 +516,11 @@ function createBadgeLabel(question) {
   if (question.subject === "pflege") {
     const group = GROUP_LABELS[question.group] ?? question.group;
     return `Pflege · ${group}`;
+  }
+
+  if (question.subject === "sturz") {
+    const group = GROUP_LABELS[question.group] ?? question.group;
+    return `Sturzprophylaxe · ${group}`;
   }
 
   const topic = question.subject === "auge" ? "Auge" : "Ohr";

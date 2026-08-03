@@ -6,6 +6,8 @@ Die bisherige Auge-und-Ohr-App enthält jetzt zusätzlich Fragen zu:
 - Pflegegraden
 - Leistungen der Pflegeversicherung
 - Entlassungs- und Überleitungsmanagement
+- Sturzrisikofaktoren und Sturzprophylaxe
+- Goldenen Regeln im Umgang mit seh- und hörbeeinträchtigten Menschen
 
 ## Start in VS Code
 
@@ -29,8 +31,10 @@ pflege-lernquiz/
 │   └── app.js
 └── data/
     ├── auge.json
+    ├── goldene_regeln.json
     ├── ohr.json
-    └── pflegeversicherung.json
+    ├── pflegeversicherung.json
+    └── sturzprophylaxe.json
 ```
 
 ## Themenauswahl
@@ -39,6 +43,7 @@ pflege-lernquiz/
 - **Ohr**
 - **Auge & Ohr**
 - **Pflegeversicherung**
+- **Sturzprophylaxe**
 - **Alle Themen**
 
 Der Bereich-Schalter passt sich an das gewählte Thema an:
