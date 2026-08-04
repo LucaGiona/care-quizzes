@@ -1,0 +1,635 @@
+[
+  {
+    "id": 1,
+    "thema": "pflegeversicherung",
+    "kategorie": "grundlagen",
+    "typ": "multiple-choice",
+    "frage": "In welchem Sozialgesetzbuch ist die Pflegeversicherung geregelt?",
+    "antworten": [
+      "SGB V",
+      "SGB XI",
+      "SGB VI",
+      "SGB VII"
+    ],
+    "richtigeAntwort": "SGB XI",
+    "erklaerung": "Das 11. Buch des Sozialgesetzbuchs regelt die rechtlichen Grundlagen der Pflegeversicherung.",
+    "quelleSeite": 6
+  },
+  {
+    "id": 2,
+    "thema": "pflegeversicherung",
+    "kategorie": "grundlagen",
+    "typ": "multiple-choice",
+    "frage": "In welchem Jahr wurde die Pflegeversicherung eingeführt?",
+    "antworten": [
+      "1883",
+      "1927",
+      "1995",
+      "2017"
+    ],
+    "richtigeAntwort": "1995",
+    "erklaerung": "Die Pflegeversicherung wurde 1995 als weitere Säule der Sozialversicherung eingeführt.",
+    "quelleSeite": 4
+  },
+  {
+    "id": 3,
+    "thema": "pflegeversicherung",
+    "kategorie": "grundlagen",
+    "typ": "multiple-choice",
+    "frage": "Welches Hauptziel hatte die Einführung der Pflegeversicherung?",
+    "antworten": [
+      "Absicherung gegen das Risiko der Pflegebedürftigkeit",
+      "Finanzierung aller Krankenhauskosten",
+      "Abschaffung der Krankenversicherung",
+      "Kostenlose Arzneimittelversorgung"
+    ],
+    "richtigeAntwort": "Absicherung gegen das Risiko der Pflegebedürftigkeit",
+    "erklaerung": "Die Pflegeversicherung soll gegen das Risiko der Pflegebedürftigkeit absichern.",
+    "quelleSeite": 6
+  },
+  {
+    "id": 4,
+    "thema": "pflegeversicherung",
+    "kategorie": "grundlagen",
+    "typ": "multiple-choice",
+    "frage": "Welcher Grundsatz der Pflegeversicherung ist in § 3 SGB XI verankert?",
+    "antworten": [
+      "Vorrang der häuslichen Pflege",
+      "Vorrang der stationären Pflege",
+      "Behandlungspflege vor Grundpflege",
+      "Krankenhauspflege vor Rehabilitation"
+    ],
+    "richtigeAntwort": "Vorrang der häuslichen Pflege",
+    "erklaerung": "§ 3 SGB XI nennt den Vorrang der häuslichen Pflege.",
+    "quelleSeite": 9
+  },
+  {
+    "id": 5,
+    "thema": "pflegeversicherung",
+    "kategorie": "grundlagen",
+    "typ": "multiple-choice",
+    "frage": "Welcher Grundsatz ist in § 2 SGB XI verankert?",
+    "antworten": [
+      "Selbstbestimmung",
+      "Versicherungspflichtgrenze",
+      "Beitragsfreiheit",
+      "Behandlungspflege"
+    ],
+    "richtigeAntwort": "Selbstbestimmung",
+    "erklaerung": "Selbstbestimmung ist ein zentraler Grundsatz der Pflegeversicherung.",
+    "quelleSeite": 9
+  },
+  {
+    "id": 6,
+    "thema": "pflegeversicherung",
+    "kategorie": "pflegekassen",
+    "typ": "multiple-choice",
+    "frage": "Wie wird die gesetzliche Pflegeversicherung laut Skript hauptsächlich finanziert?",
+    "antworten": [
+      "Durch Beiträge der Mitglieder und Arbeitgeber",
+      "Nur durch Steuern",
+      "Nur durch Arbeitgeber",
+      "Durch Spenden der Pflegeeinrichtungen"
+    ],
+    "richtigeAntwort": "Durch Beiträge der Mitglieder und Arbeitgeber",
+    "erklaerung": "Die Ausgaben werden durch Beiträge der Mitglieder und Arbeitgeber finanziert.",
+    "quelleSeite": 10
+  },
+  {
+    "id": 7,
+    "thema": "pflegeversicherung",
+    "kategorie": "pflegekassen",
+    "typ": "multiple-choice",
+    "frage": "Wonach richtet sich die Höhe der Beiträge zur Pflegeversicherung laut Skript?",
+    "antworten": [
+      "Nach dem Bruttoeinkommen",
+      "Nach dem Pflegegrad",
+      "Nach dem Alter",
+      "Nach der Zahl der Arztbesuche"
+    ],
+    "richtigeAntwort": "Nach dem Bruttoeinkommen",
+    "erklaerung": "Die Höhe der Beiträge richtet sich nach dem Bruttoeinkommen des Versicherten.",
+    "quelleSeite": 10
+  },
+  {
+    "id": 8,
+    "thema": "pflegeversicherung",
+    "kategorie": "pflegekassen",
+    "typ": "multiple-choice",
+    "frage": "Welche Aufgabe gehört zu den Aufgaben der Pflegekassen?",
+    "antworten": [
+      "Pflegeberatung",
+      "Ausstellung von Führerscheinen",
+      "Durchführung von Operationen",
+      "Festlegung von Arzneimittelpreisen"
+    ],
+    "richtigeAntwort": "Pflegeberatung",
+    "erklaerung": "Zu den Aufgaben der Pflegekassen gehören unter anderem Pflegeberatung und die Sicherstellung der pflegerischen Versorgung.",
+    "quelleSeite": 11
+  },
+  {
+    "id": 9,
+    "thema": "pflegeversicherung",
+    "kategorie": "versicherung",
+    "typ": "multiple-choice",
+    "frage": "Wer ist grundsätzlich in der Pflegeversicherung pflichtversichert?",
+    "antworten": [
+      "Jeder gesetzlich oder privat Krankenversicherte",
+      "Nur Menschen über 65 Jahre",
+      "Nur Arbeitnehmer",
+      "Nur Personen mit Pflegegrad"
+    ],
+    "richtigeAntwort": "Jeder gesetzlich oder privat Krankenversicherte",
+    "erklaerung": "Die Pflegeversicherung folgt grundsätzlich der Krankenversicherung.",
+    "quelleSeite": 18
+  },
+  {
+    "id": 10,
+    "thema": "pflegegrade",
+    "kategorie": "pflegebeduerftigkeit",
+    "typ": "multiple-choice",
+    "frage": "Worauf richtet sich der Pflegebedürftigkeitsbegriff seit 2017 besonders?",
+    "antworten": [
+      "Auf den Grad der verbliebenen Selbstständigkeit",
+      "Nur auf körperliche Erkrankungen",
+      "Nur auf den täglichen Zeitaufwand",
+      "Nur auf das Alter"
+    ],
+    "richtigeAntwort": "Auf den Grad der verbliebenen Selbstständigkeit",
+    "erklaerung": "Seit 2017 steht die Beeinträchtigung der Selbstständigkeit oder der Fähigkeiten im Mittelpunkt.",
+    "quelleSeite": 12
+  },
+  {
+    "id": 11,
+    "thema": "pflegegrade",
+    "kategorie": "pflegebeduerftigkeit",
+    "typ": "multiple-choice",
+    "frage": "Wie viele Lebensbereiche werden bei der Begutachtung der Pflegebedürftigkeit betrachtet?",
+    "antworten": [
+      "Vier",
+      "Fünf",
+      "Sechs",
+      "Acht"
+    ],
+    "richtigeAntwort": "Sechs",
+    "erklaerung": "Die Begutachtung betrachtet sechs Lebensbereiche beziehungsweise Module.",
+    "quelleSeite": 17
+  },
+  {
+    "id": 12,
+    "thema": "pflegegrade",
+    "kategorie": "module",
+    "typ": "multiple-choice",
+    "frage": "Welcher Bereich wird mit 40 Prozent am stärksten gewichtet?",
+    "antworten": [
+      "Selbstversorgung",
+      "Mobilität",
+      "Gestaltung des Alltagslebens",
+      "Kognitive Fähigkeiten"
+    ],
+    "richtigeAntwort": "Selbstversorgung",
+    "erklaerung": "Die Selbstversorgung hat mit 40 Prozent die höchste Gewichtung.",
+    "quelleSeite": 12
+  },
+  {
+    "id": 13,
+    "thema": "pflegegrade",
+    "kategorie": "module",
+    "typ": "multiple-choice",
+    "frage": "Mit wie viel Prozent wird der Bereich Mobilität gewichtet?",
+    "antworten": [
+      "10 Prozent",
+      "15 Prozent",
+      "20 Prozent",
+      "40 Prozent"
+    ],
+    "richtigeAntwort": "10 Prozent",
+    "erklaerung": "Das Modul Mobilität wird mit 10 Prozent gewichtet.",
+    "quelleSeite": 12
+  },
+  {
+    "id": 14,
+    "thema": "pflegegrade",
+    "kategorie": "module",
+    "typ": "multiple-choice",
+    "frage": "Welcher Bereich wird mit 20 Prozent gewichtet?",
+    "antworten": [
+      "Umgang mit krankheits- oder therapiebedingten Anforderungen",
+      "Mobilität",
+      "Selbstversorgung",
+      "Gestaltung sozialer Kontakte"
+    ],
+    "richtigeAntwort": "Umgang mit krankheits- oder therapiebedingten Anforderungen",
+    "erklaerung": "Der Umgang mit krankheits- und therapiebedingten Anforderungen wird mit 20 Prozent gewichtet.",
+    "quelleSeite": 12
+  },
+  {
+    "id": 15,
+    "thema": "pflegegrade",
+    "kategorie": "pflegegrade",
+    "typ": "multiple-choice",
+    "frage": "Ab welcher Punktzahl beginnt Pflegegrad 1?",
+    "antworten": [
+      "Ab 7,5 Punkten",
+      "Ab 12,5 Punkten",
+      "Ab 27 Punkten",
+      "Ab 47,5 Punkten"
+    ],
+    "richtigeAntwort": "Ab 12,5 Punkten",
+    "erklaerung": "Pflegegrad 1 beginnt ab 12,5 Punkten und reicht bis unter 27 Punkte.",
+    "quelleSeite": 16
+  },
+  {
+    "id": 16,
+    "thema": "pflegegrade",
+    "kategorie": "pflegegrade",
+    "typ": "multiple-choice",
+    "frage": "Welcher Pflegegrad entspricht 47,5 bis unter 70 Punkten?",
+    "antworten": [
+      "Pflegegrad 1",
+      "Pflegegrad 2",
+      "Pflegegrad 3",
+      "Pflegegrad 4"
+    ],
+    "richtigeAntwort": "Pflegegrad 3",
+    "erklaerung": "Pflegegrad 3 beschreibt schwere Beeinträchtigungen der Selbstständigkeit.",
+    "quelleSeite": 16
+  },
+  {
+    "id": 17,
+    "thema": "pflegegrade",
+    "kategorie": "pflegegrade",
+    "typ": "multiple-choice",
+    "frage": "Welcher Pflegegrad beginnt ab 90 Punkten?",
+    "antworten": [
+      "Pflegegrad 2",
+      "Pflegegrad 3",
+      "Pflegegrad 4",
+      "Pflegegrad 5"
+    ],
+    "richtigeAntwort": "Pflegegrad 5",
+    "erklaerung": "Pflegegrad 5 beginnt ab 90 Punkten und umfasst besondere Anforderungen an die pflegerische Versorgung.",
+    "quelleSeite": 16
+  },
+  {
+    "id": 18,
+    "thema": "pflegegrade",
+    "kategorie": "begutachtung",
+    "typ": "multiple-choice",
+    "frage": "Welche Institution prüft den Antrag auf einen Pflegegrad?",
+    "antworten": [
+      "Der Medizinische Dienst",
+      "Das Finanzamt",
+      "Die Rentenversicherung",
+      "Die Berufsgenossenschaft"
+    ],
+    "richtigeAntwort": "Der Medizinische Dienst",
+    "erklaerung": "Der Medizinische Dienst begutachtet die Pflegebedürftigkeit und prüft die Module.",
+    "quelleSeite": 17
+  },
+  {
+    "id": 19,
+    "thema": "pflegegrade",
+    "kategorie": "begriffe",
+    "typ": "text",
+    "frage": "Wie lautet die Abkürzung für den Medizinischen Dienst?",
+    "akzeptierteAntworten": [
+      "MD",
+      "Medizinischer Dienst"
+    ],
+    "erklaerung": "Im Skript wird der Medizinische Dienst mit MD bezeichnet.",
+    "quelleSeite": 17
+  },
+  {
+    "id": 20,
+    "thema": "leistungen",
+    "kategorie": "begriffe",
+    "typ": "multiple-choice",
+    "frage": "Was sind Pflegesachleistungen?",
+    "antworten": [
+      "Professionelle pflegerische Hilfen in der häuslichen Versorgung",
+      "Direkte Geldzahlungen an Krankenhäuser",
+      "Leistungen der Rentenversicherung",
+      "Ausschließlich Medikamente und Verbandsmaterial"
+    ],
+    "richtigeAntwort": "Professionelle pflegerische Hilfen in der häuslichen Versorgung",
+    "erklaerung": "Pflegesachleistungen werden durch professionelle Pflegende beziehungsweise ambulante Pflegedienste erbracht.",
+    "quelleSeite": 20
+  },
+  {
+    "id": 21,
+    "thema": "leistungen",
+    "kategorie": "paragraphen",
+    "typ": "multiple-choice",
+    "frage": "In welchem Paragraphen des SGB XI ist die Pflegesachleistung geregelt?",
+    "antworten": [
+      "§ 36",
+      "§ 37",
+      "§ 39",
+      "§ 43"
+    ],
+    "richtigeAntwort": "§ 36",
+    "erklaerung": "Die Pflegesachleistung ist in § 36 SGB XI geregelt.",
+    "quelleSeite": 26
+  },
+  {
+    "id": 22,
+    "thema": "leistungen",
+    "kategorie": "begriffe",
+    "typ": "multiple-choice",
+    "frage": "Wann wird Pflegegeld gezahlt?",
+    "antworten": [
+      "Wenn die Pflege zum Beispiel durch Angehörige erfolgt",
+      "Nur bei einem Krankenhausaufenthalt",
+      "Nur bei vollstationärer Pflege",
+      "Nur bei Behandlungspflege"
+    ],
+    "richtigeAntwort": "Wenn die Pflege zum Beispiel durch Angehörige erfolgt",
+    "erklaerung": "Pflegegeld wird direkt an die pflegebedürftige Person gezahlt, wenn die Pflege selbst organisiert wird.",
+    "quelleSeite": 21
+  },
+  {
+    "id": 23,
+    "thema": "leistungen",
+    "kategorie": "begriffe",
+    "typ": "multiple-choice",
+    "frage": "Was sind Pflegehilfsmittel?",
+    "antworten": [
+      "Geräte und Sachmittel zur Erleichterung der häuslichen Pflege",
+      "Nur verschreibungspflichtige Medikamente",
+      "Ausschließlich medizinische Diagnosen",
+      "Beiträge zur Rentenversicherung"
+    ],
+    "richtigeAntwort": "Geräte und Sachmittel zur Erleichterung der häuslichen Pflege",
+    "erklaerung": "Pflegehilfsmittel sollen die Pflege erleichtern, Beschwerden lindern oder eine selbstständigere Lebensführung ermöglichen.",
+    "quelleSeite": 21
+  },
+  {
+    "id": 24,
+    "thema": "leistungen",
+    "kategorie": "versorgungsformen",
+    "typ": "multiple-choice",
+    "frage": "Was bedeutet Tages- und Nachtpflege?",
+    "antworten": [
+      "Teilstationäre zeitweise Betreuung in einer Pflegeeinrichtung",
+      "Dauerhafte Unterbringung im Krankenhaus",
+      "Ausschließliche Pflege durch Angehörige",
+      "Ambulante Behandlungspflege durch einen Arzt"
+    ],
+    "richtigeAntwort": "Teilstationäre zeitweise Betreuung in einer Pflegeeinrichtung",
+    "erklaerung": "Tages- und Nachtpflege ist eine teilstationäre Versorgung.",
+    "quelleSeite": 22
+  },
+  {
+    "id": 25,
+    "thema": "leistungen",
+    "kategorie": "versorgungsformen",
+    "typ": "multiple-choice",
+    "frage": "Was beschreibt die Kurzzeitpflege?",
+    "antworten": [
+      "Vorübergehende Pflege in einer Pflegeeinrichtung",
+      "Dauerhafte Pflege im eigenen Haushalt",
+      "Ausschließlich nächtliche Betreuung",
+      "Eine medizinische Rehabilitation"
+    ],
+    "richtigeAntwort": "Vorübergehende Pflege in einer Pflegeeinrichtung",
+    "erklaerung": "Bei der Kurzzeitpflege wird die pflegebedürftige Person für eine begrenzte Zeit stationär versorgt.",
+    "quelleSeite": 22
+  },
+  {
+    "id": 26,
+    "thema": "leistungen",
+    "kategorie": "versorgungsformen",
+    "typ": "multiple-choice",
+    "frage": "Was bedeutet vollstationäre Pflege?",
+    "antworten": [
+      "Dauerhafter Aufenthalt in einem Pflegeheim",
+      "Zeitweise Betreuung am Tag",
+      "Pflege ausschließlich durch Angehörige",
+      "Ambulante Pflege im eigenen Haushalt"
+    ],
+    "richtigeAntwort": "Dauerhafter Aufenthalt in einem Pflegeheim",
+    "erklaerung": "Vollstationäre Pflege bezeichnet den dauerhaften Aufenthalt in einer Pflegeeinrichtung.",
+    "quelleSeite": 23
+  },
+  {
+    "id": 27,
+    "thema": "leistungen",
+    "kategorie": "abgrenzung",
+    "typ": "multiple-choice",
+    "frage": "Welche Leistung gehört laut Skript nicht zur Pflegeversicherung nach SGB XI?",
+    "antworten": [
+      "Behandlungspflege",
+      "Pflegegeld",
+      "Pflegehilfsmittel",
+      "Kurzzeitpflege"
+    ],
+    "richtigeAntwort": "Behandlungspflege",
+    "erklaerung": "Behandlungspflege ist im SGB V verankert und keine Leistung der Pflegeversicherung.",
+    "quelleSeite": 25
+  },
+  {
+    "id": 28,
+    "thema": "leistungen",
+    "kategorie": "kombinationsleistung",
+    "typ": "multiple-choice",
+    "frage": "Was geschieht mit dem Pflegegeld, wenn ein Teil der Pflegesachleistung genutzt wird?",
+    "antworten": [
+      "Es verringert sich entsprechend dem genutzten Prozentsatz",
+      "Es verdoppelt sich",
+      "Es entfällt immer vollständig",
+      "Es bleibt unabhängig davon unverändert"
+    ],
+    "richtigeAntwort": "Es verringert sich entsprechend dem genutzten Prozentsatz",
+    "erklaerung": "Bei der Kombinationsleistung reduziert sich der Pflegegeldanspruch um den ausgeschöpften Anteil der Sachleistung.",
+    "quelleSeite": 30
+  },
+  {
+    "id": 29,
+    "thema": "leistungen",
+    "kategorie": "paragraphen",
+    "typ": "text",
+    "frage": "In welchem Paragraphen des SGB XI ist die Kurzzeitpflege geregelt?",
+    "akzeptierteAntworten": [
+      "§ 42",
+      "42",
+      "Paragraph 42"
+    ],
+    "erklaerung": "Die Kurzzeitpflege ist in § 42 SGB XI geregelt.",
+    "quelleSeite": 26
+  },
+  {
+    "id": 30,
+    "thema": "entlassungsmanagement",
+    "kategorie": "begriffe",
+    "typ": "multiple-choice",
+    "frage": "Worauf fokussiert das Entlassungsmanagement?",
+    "antworten": [
+      "Auf Zeitpunkt und Versorgungsbedarf beim Verlassen des Krankenhauses",
+      "Nur auf die Aufnahme in das Krankenhaus",
+      "Nur auf die ärztliche Diagnose",
+      "Nur auf die Abrechnung der Pflegeversicherung"
+    ],
+    "richtigeAntwort": "Auf Zeitpunkt und Versorgungsbedarf beim Verlassen des Krankenhauses",
+    "erklaerung": "Das Entlassungsmanagement plant die bedarfsgerechte Anschlussversorgung nach dem Krankenhaus.",
+    "quelleSeite": 39
+  },
+  {
+    "id": 31,
+    "thema": "entlassungsmanagement",
+    "kategorie": "begriffe",
+    "typ": "multiple-choice",
+    "frage": "Was beschreibt das Überleitungsmanagement?",
+    "antworten": [
+      "Die Organisation des Wechsels in ein anderes Versorgungssetting",
+      "Die Vergabe eines Pflegegrades",
+      "Die Finanzierung von Medikamenten",
+      "Die Durchführung einer Operation"
+    ],
+    "richtigeAntwort": "Die Organisation des Wechsels in ein anderes Versorgungssetting",
+    "erklaerung": "Zum Überleitungsmanagement gehören die Organisation des Wechsels und die Weitergabe versorgungsrelevanter Informationen.",
+    "quelleSeite": 39
+  },
+  {
+    "id": 32,
+    "thema": "entlassungsmanagement",
+    "kategorie": "phasen",
+    "typ": "multiple-choice",
+    "frage": "Was ist die erste Phase des Überleitungsmanagements?",
+    "antworten": [
+      "Risiko und Versorgungsbedarf einschätzen",
+      "Entlassung sofort durchführen",
+      "Pflegegrad automatisch vergeben",
+      "Nur Angehörige informieren"
+    ],
+    "richtigeAntwort": "Risiko und Versorgungsbedarf einschätzen",
+    "erklaerung": "Zu Beginn werden Risiko und Versorgungsbedarf mit Assessmentinstrumenten eingeschätzt.",
+    "quelleSeite": 40
+  },
+  {
+    "id": 33,
+    "thema": "entlassungsmanagement",
+    "kategorie": "phasen",
+    "typ": "multiple-choice",
+    "frage": "Welche Phase folgt auf die Einschätzung von Risiko und Versorgungsbedarf?",
+    "antworten": [
+      "Einen individuellen poststationären Versorgungsplan entwickeln",
+      "Den Pflegegrad löschen",
+      "Die Behandlung abbrechen",
+      "Nur die Rechnung erstellen"
+    ],
+    "richtigeAntwort": "Einen individuellen poststationären Versorgungsplan entwickeln",
+    "erklaerung": "Die zweite Phase ist die Entwicklung eines individuellen Versorgungsplans.",
+    "quelleSeite": 40
+  },
+  {
+    "id": 34,
+    "thema": "entlassungsmanagement",
+    "kategorie": "assessment",
+    "typ": "multiple-choice",
+    "frage": "Welches Assessmentinstrument dient der Einschätzung des poststationären Versorgungsbedarfs?",
+    "antworten": [
+      "BRASS-Index",
+      "Braden-Skala",
+      "NRS",
+      "MNA"
+    ],
+    "richtigeAntwort": "BRASS-Index",
+    "erklaerung": "Der Blaylock Risk Assessment Screening Score wird für den poststationären Versorgungsbedarf genutzt.",
+    "quelleSeite": 45
+  },
+  {
+    "id": 35,
+    "thema": "entlassungsmanagement",
+    "kategorie": "assessment",
+    "typ": "multiple-choice",
+    "frage": "Welches Instrument dient der Einschätzung des Dekubitusrisikos?",
+    "antworten": [
+      "Braden-Skala",
+      "BRASS-Index",
+      "MMST",
+      "Barthel-Index"
+    ],
+    "richtigeAntwort": "Braden-Skala",
+    "erklaerung": "Die Braden-Skala wird zur Einschätzung des Dekubitusrisikos eingesetzt.",
+    "quelleSeite": 45
+  },
+  {
+    "id": 36,
+    "thema": "entlassungsmanagement",
+    "kategorie": "assessment",
+    "typ": "multiple-choice",
+    "frage": "Welches Instrument wird zur Schmerzerfassung verwendet?",
+    "antworten": [
+      "Numerische Rating-Skala",
+      "Mini Mental-Status-Test",
+      "Tinetti-Test",
+      "BRASS-Index"
+    ],
+    "richtigeAntwort": "Numerische Rating-Skala",
+    "erklaerung": "Die Numerische Rating-Skala, kurz NRS, dient der Schmerzerfassung.",
+    "quelleSeite": 45
+  },
+  {
+    "id": 37,
+    "thema": "entlassungsmanagement",
+    "kategorie": "ziele",
+    "typ": "multiple-choice",
+    "frage": "Welches Ziel gehört zur interdisziplinären Versorgungsplanung?",
+    "antworten": [
+      "Versorgungsbrüche und gesundheitliche Risiken verhindern",
+      "Angehörige grundsätzlich ausschließen",
+      "Informationen zwischen Einrichtungen reduzieren",
+      "Wiedereinweisungen fördern"
+    ],
+    "richtigeAntwort": "Versorgungsbrüche und gesundheitliche Risiken verhindern",
+    "erklaerung": "Eine strukturierte Versorgungsplanung soll Brüche vermeiden und die Versorgungssicherheit erhöhen.",
+    "quelleSeite": 47
+  },
+  {
+    "id": 38,
+    "thema": "entlassungsmanagement",
+    "kategorie": "ziele",
+    "typ": "multiple-choice",
+    "frage": "Warum sollen Angehörige in die Versorgungsplanung einbezogen werden?",
+    "antworten": [
+      "Um sie einzubeziehen und zu entlasten",
+      "Um Pflegefachpersonen vollständig zu ersetzen",
+      "Um die Dokumentation zu vermeiden",
+      "Um den Pflegegrad automatisch zu erhöhen"
+    ],
+    "richtigeAntwort": "Um sie einzubeziehen und zu entlasten",
+    "erklaerung": "Die Perspektive und die Ressourcen der Angehörigen sollen berücksichtigt und Belastungen reduziert werden.",
+    "quelleSeite": 47
+  },
+  {
+    "id": 39,
+    "thema": "entlassungsmanagement",
+    "kategorie": "drehtuer",
+    "typ": "multiple-choice",
+    "frage": "Was bezeichnet der Drehtüreffekt?",
+    "antworten": [
+      "Erneute Aufnahme mit gleicher Diagnose innerhalb kurzer Zeit nach der Entlassung",
+      "Den Wechsel von der Tages- zur Nachtpflege",
+      "Die automatische Erhöhung des Pflegegrades",
+      "Den Wechsel der Krankenkasse"
+    ],
+    "richtigeAntwort": "Erneute Aufnahme mit gleicher Diagnose innerhalb kurzer Zeit nach der Entlassung",
+    "erklaerung": "Der Drehtüreffekt ist ein typisches Zeichen eines unzureichenden Entlassungs- oder Überleitungsmanagements.",
+    "quelleSeite": 49
+  },
+  {
+    "id": 40,
+    "thema": "entlassungsmanagement",
+    "kategorie": "begriffe",
+    "typ": "text",
+    "frage": "Wie heißt der Standard, der eine strukturierte Entlassungsplanung in der Pflege beschreibt?",
+    "akzeptierteAntworten": [
+      "Expertenstandard Entlassungsmanagement",
+      "Entlassungsmanagement",
+      "Expertenstandard Entlassungsmanagement in der Pflege"
+    ],
+    "erklaerung": "Der Expertenstandard Entlassungsmanagement beschreibt Struktur-, Prozess- und Ergebniskriterien.",
+    "quelleSeite": 41
+  }
+]
