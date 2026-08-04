@@ -41,7 +41,15 @@ const GROUP_LABELS = {
   nach_sturz: "Nach einem Sturz",
   grundsaetze: "Grundsätze",
   umgang_hoerbeeintraechtigung: "Umgang mit Hörbeeinträchtigung",
-  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung"
+  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung",
+  presbyakusis: "Presbyakusis",
+  augenmedikamente: "Augenmedikamente",
+  traenenwege: "Tränenwege",
+  pupillenreaktion: "Pupillenreaktion",
+  augenerkrankungen: "Augenerkrankungen",
+  pflegebeduerftigkeit: "Pflegebedürftigkeit",
+  kurzzeitpflege: "Kurzzeitpflege",
+  wohnformen: "Wohnformen"
 };
 
 const TOPIC_LABELS = {
@@ -67,13 +75,15 @@ async function loadQuizData() {
       earResponse,
       careResponse,
       fallPreventionResponse,
-      goldenRulesResponse
+      goldenRulesResponse,
+      learningSummaryResponse
     ] = await Promise.all([
       fetch("./data/auge.json"),
       fetch("./data/ohr.json"),
       fetch("./data/pflegeversicherung.json"),
       fetch("./data/sturzprophylaxe.json"),
-      fetch("./data/goldene_regeln.json")
+      fetch("./data/goldene_regeln.json"),
+      fetch("./data/lernzusammenfassung_zusatz.json")
     ]);
 
     if (
@@ -81,7 +91,8 @@ async function loadQuizData() {
       !earResponse.ok ||
       !careResponse.ok ||
       !fallPreventionResponse.ok ||
-      !goldenRulesResponse.ok
+      !goldenRulesResponse.ok ||
+      !learningSummaryResponse.ok
     ) {
       throw new Error("Die Quizdaten konnten nicht vollständig geladen werden.");
     }
@@ -91,13 +102,15 @@ async function loadQuizData() {
       earTerms,
       careQuestions,
       fallPreventionQuestions,
-      goldenRuleQuestions
+      goldenRuleQuestions,
+      learningSummaryQuestions
     ] = await Promise.all([
       eyeResponse.json(),
       earResponse.json(),
       careResponse.json(),
       fallPreventionResponse.json(),
-      goldenRulesResponse.json()
+      goldenRulesResponse.json(),
+      learningSummaryResponse.json()
     ]);
 
     allQuestions = [
@@ -105,7 +118,12 @@ async function loadQuizData() {
       ...normalizeTerms(earTerms, "ohr"),
       ...normalizeCareQuestions(careQuestions),
       ...normalizeKnowledgeQuestions(fallPreventionQuestions, "sturz"),
-      ...normalizeGoldenRuleQuestions(goldenRuleQuestions)
+      ...normalizeGoldenRuleQuestions(goldenRuleQuestions),
+      ...normalizeQuestionsByArea(
+        learningSummaryQuestions,
+        "lernzusammenfassung_zusatz.json",
+        "lernzusatz"
+      )
     ];
 
     startButton.disabled = false;
@@ -154,16 +172,30 @@ function normalizeCareQuestions(questions) {
 }
 
 function normalizeGoldenRuleQuestions(questions) {
+  return normalizeQuestionsByArea(
+    questions,
+    "goldene_regeln.json",
+    "goldene-regeln",
+    ["auge", "ohr"]
+  );
+}
+
+function normalizeQuestionsByArea(
+  questions,
+  sourceFile,
+  uidPrefix,
+  allowedAreas = ["auge", "ohr", "pflege"]
+) {
   return questions.flatMap((question) => {
-    if (question.bereich !== "auge" && question.bereich !== "ohr") {
-      console.warn("Unbekannter Bereich in goldene_regeln.json", question);
+    if (!allowedAreas.includes(question.bereich)) {
+      console.warn(`Unbekannter Bereich in ${sourceFile}`, question);
       return [];
     }
 
     return normalizeKnowledgeQuestions(
       [question],
       question.bereich,
-      `goldene-regeln-${question.bereich}`
+      `${uidPrefix}-${question.bereich}`
     );
   });
 }
@@ -214,24 +246,37 @@ function updateCategoryOptions() {
   const eyeGroups = [
     "anatomie",
     "erkrankung",
-    "umgang_sehbeeintraechtigung"
+    "umgang_sehbeeintraechtigung",
+    "augenmedikamente",
+    "traenenwege",
+    "pupillenreaktion",
+    "augenerkrankungen"
   ];
   const earGroups = [
     "anatomie",
     "erkrankung",
-    "umgang_hoerbeeintraechtigung"
+    "umgang_hoerbeeintraechtigung",
+    "presbyakusis"
   ];
   const sensoryOrganGroups = [
     "anatomie",
     "erkrankung",
     "umgang_sehbeeintraechtigung",
-    "umgang_hoerbeeintraechtigung"
+    "umgang_hoerbeeintraechtigung",
+    "augenmedikamente",
+    "traenenwege",
+    "pupillenreaktion",
+    "augenerkrankungen",
+    "presbyakusis"
   ];
   const careGroups = [
     "pflegeversicherung",
     "pflegegrade",
     "leistungen",
-    "entlassungsmanagement"
+    "entlassungsmanagement",
+    "pflegebeduerftigkeit",
+    "kurzzeitpflege",
+    "wohnformen"
   ];
   const fallPreventionGroups = [
     "risikofaktoren",
