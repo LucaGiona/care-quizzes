@@ -22,6 +22,7 @@ const questionElement = document.querySelector("#question");
 const answerArea = document.querySelector("#answer-area");
 const feedbackElement = document.querySelector("#feedback");
 const resultText = document.querySelector("#result-text");
+const reviewList = document.querySelector("#review-list");
 
 const GROUP_LABELS = {
   anatomie: "Anatomie",
@@ -29,7 +30,19 @@ const GROUP_LABELS = {
   pflegeversicherung: "Pflegeversicherung",
   pflegegrade: "Pflegegrade",
   leistungen: "Leistungen",
-  entlassungsmanagement: "Entlassungsmanagement"
+  entlassungsmanagement: "Entlassungsmanagement",
+  risikofaktoren: "Risikofaktoren",
+  einschaetzung: "Einschätzung",
+  beratung: "Beratung",
+  mobilitaet: "Mobilität",
+  umgebung: "Umgebung",
+  hilfsmittel: "Hilfsmittel",
+  medikation: "Medikation",
+  alltag: "Alltag",
+  nach_sturz: "Nach einem Sturz",
+  grundsaetze: "Grundsätze",
+  umgang_hoerbeeintraechtigung: "Umgang mit Hörbeeinträchtigung",
+  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung"
 };
 
 const TOPIC_LABELS = {
@@ -37,6 +50,7 @@ const TOPIC_LABELS = {
   ohr: "Ohr",
   sinnesorgane: "Auge & Ohr",
   pflege: "Pflegeversicherung",
+  sturz: "Sturzprophylaxe",
   alle: "Alle Themen"
 };
 
@@ -49,26 +63,50 @@ let answerChecked = false;
 
 async function loadQuizData() {
   try {
-    const [eyeResponse, earResponse, careResponse] = await Promise.all([
+    const [
+      eyeResponse,
+      earResponse,
+      careResponse,
+      fallPreventionResponse,
+      goldenRulesResponse
+    ] = await Promise.all([
       fetch("./data/auge.json"),
       fetch("./data/ohr.json"),
-      fetch("./data/pflegeversicherung.json")
+      fetch("./data/pflegeversicherung.json"),
+      fetch("./data/sturzprophylaxe.json"),
+      fetch("./data/goldene_regeln.json")
     ]);
 
-    if (!eyeResponse.ok || !earResponse.ok || !careResponse.ok) {
+    if (
+      !eyeResponse.ok ||
+      !earResponse.ok ||
+      !careResponse.ok ||
+      !fallPreventionResponse.ok ||
+      !goldenRulesResponse.ok
+    ) {
       throw new Error("Die Quizdaten konnten nicht vollständig geladen werden.");
     }
 
-    const [eyeTerms, earTerms, careQuestions] = await Promise.all([
+    const [
+      eyeTerms,
+      earTerms,
+      careQuestions,
+      fallPreventionQuestions,
+      goldenRuleQuestions
+    ] = await Promise.all([
       eyeResponse.json(),
       earResponse.json(),
-      careResponse.json()
+      careResponse.json(),
+      fallPreventionResponse.json(),
+      goldenRulesResponse.json()
     ]);
 
     allQuestions = [
       ...normalizeTerms(eyeTerms, "auge"),
       ...normalizeTerms(earTerms, "ohr"),
-      ...normalizeCareQuestions(careQuestions)
+      ...normalizeCareQuestions(careQuestions),
+      ...normalizeFallPreventionQuestions(fallPreventionQuestions),
+      ...normalizeGoldenRuleQuestions(goldenRuleQuestions)
     ];
 
     startButton.disabled = false;
@@ -97,7 +135,10 @@ function normalizeTerms(terms, subject) {
     subcategory: term.kategorie,
     sourceKind: "term",
     originalMode: null,
-    question: `Wie lautet der Fachbegriff für „${term.de}“?`,
+    de: term.de,
+    fachbegriff: term.fachbegriff,
+    alternatives: term.alternativen ?? [],
+    question: "",
     correctAnswer: term.fachbegriff,
     acceptedAnswers: [
       term.fachbegriff,
@@ -110,15 +151,42 @@ function normalizeTerms(terms, subject) {
 }
 
 function normalizeCareQuestions(questions) {
+  return normalizeKnowledgeQuestions(questions, "pflege");
+}
+
+function normalizeFallPreventionQuestions(questions) {
+  return normalizeKnowledgeQuestions(questions, "sturz", {
+    groupField: "kategorie"
+  });
+}
+
+function normalizeGoldenRuleQuestions(questions) {
+  return questions.flatMap((question) => {
+    if (question.bereich !== "auge" && question.bereich !== "ohr") {
+      console.warn("Unbekannter Bereich in goldene_regeln.json", question);
+      return [];
+    }
+
+    return normalizeKnowledgeQuestions([question], question.bereich, {
+      uidNamespace: `goldene-regeln-${question.bereich}`
+    });
+  });
+}
+
+function normalizeKnowledgeQuestions(
+  questions,
+  subject,
+  { uidNamespace = subject, groupField = "thema" } = {}
+) {
   return questions.map((question) => {
     const acceptedAnswers =
       question.akzeptierteAntworten ??
       (question.richtigeAntwort ? [question.richtigeAntwort] : []);
 
     return {
-      uid: `pflege-${question.id}`,
-      subject: "pflege",
-      group: question.thema,
+      uid: `${uidNamespace}-${question.id}`,
+      subject,
+      group: question[groupField],
       subcategory: question.kategorie,
       sourceKind: "knowledge",
       originalMode: question.typ,
@@ -148,22 +216,53 @@ function selectTopic(topic) {
 }
 
 function updateCategoryOptions() {
-  const eyeAndEarGroups = ["anatomie", "erkrankung"];
+  const eyeGroups = ["anatomie", "erkrankung", "umgang_sehbeeintraechtigung"];
+  const earGroups = ["anatomie", "erkrankung", "umgang_hoerbeeintraechtigung"];
+  const sensoryOrganGroups = [
+    "anatomie",
+    "erkrankung",
+    "umgang_sehbeeintraechtigung",
+    "umgang_hoerbeeintraechtigung"
+  ];
   const careGroups = [
     "pflegeversicherung",
     "pflegegrade",
     "leistungen",
     "entlassungsmanagement"
   ];
+  const fallPreventionGroups = [
+    "risikofaktoren",
+    "einschaetzung",
+    "beratung",
+    "mobilitaet",
+    "umgebung",
+    "hilfsmittel",
+    "medikation",
+    "alltag",
+    "nach_sturz",
+    "grundsaetze"
+  ];
 
-  let groups = eyeAndEarGroups;
+  let groups = eyeGroups;
+
+  if (selectedTopic === "ohr") {
+    groups = earGroups;
+  }
+
+  if (selectedTopic === "sinnesorgane") {
+    groups = sensoryOrganGroups;
+  }
 
   if (selectedTopic === "pflege") {
     groups = careGroups;
   }
 
+  if (selectedTopic === "sturz") {
+    groups = fallPreventionGroups;
+  }
+
   if (selectedTopic === "alle") {
-    groups = [...eyeAndEarGroups, ...careGroups];
+    groups = [...sensoryOrganGroups, ...careGroups, ...fallPreventionGroups];
   }
 
   categorySelect.innerHTML = "";
@@ -233,14 +332,37 @@ function getFilteredQuestions() {
 }
 
 function createQuizQuestion(question, mode, availableQuestions) {
-  return {
+  const quizQuestion = {
     ...question,
-    mode,
-    options:
-      mode === "multiple-choice"
-        ? createAnswerOptions(question, availableQuestions)
-        : []
+    mode
   };
+
+  if (question.sourceKind === "term") {
+    const answerDirection = Math.random() < 0.5 ? "fachbegriff" : "deutsch";
+
+    quizQuestion.answerDirection = answerDirection;
+
+    if (answerDirection === "fachbegriff") {
+      quizQuestion.question =
+        `Wie lautet der Fachbegriff für „${question.de}“?`;
+      quizQuestion.correctAnswer = question.fachbegriff;
+      quizQuestion.acceptedAnswers = [
+        question.fachbegriff,
+        ...question.alternatives
+      ];
+    } else {
+      quizQuestion.question = `Was bedeutet „${question.fachbegriff}“?`;
+      quizQuestion.correctAnswer = question.de;
+      quizQuestion.acceptedAnswers = [question.de];
+    }
+  }
+
+  quizQuestion.options =
+    mode === "multiple-choice"
+      ? createAnswerOptions(quizQuestion, availableQuestions)
+      : [];
+
+  return quizQuestion;
 }
 
 function createAnswerOptions(correctQuestion, availableQuestions) {
@@ -248,7 +370,14 @@ function createAnswerOptions(correctQuestion, availableQuestions) {
     return shuffleArray([...correctQuestion.predefinedOptions]);
   }
 
-  const sameSubjectAndGroup = availableQuestions.filter((question) => {
+  const isTermQuestion = correctQuestion.sourceKind === "term";
+  const answerField =
+    correctQuestion.answerDirection === "deutsch" ? "de" : "fachbegriff";
+  const eligibleQuestions = isTermQuestion
+    ? availableQuestions.filter((question) => question.sourceKind === "term")
+    : availableQuestions;
+
+  const sameSubjectAndGroup = eligibleQuestions.filter((question) => {
     return (
       question.subject === correctQuestion.subject &&
       question.group === correctQuestion.group &&
@@ -256,14 +385,14 @@ function createAnswerOptions(correctQuestion, availableQuestions) {
     );
   });
 
-  const sameGroup = availableQuestions.filter((question) => {
+  const sameGroup = eligibleQuestions.filter((question) => {
     return (
       question.group === correctQuestion.group &&
       question.uid !== correctQuestion.uid
     );
   });
 
-  const fallback = availableQuestions.filter((question) => {
+  const fallback = eligibleQuestions.filter((question) => {
     return question.uid !== correctQuestion.uid;
   });
 
@@ -278,7 +407,9 @@ function createAnswerOptions(correctQuestion, availableQuestions) {
   }
 
   const wrongAnswers = shuffleArray(answerPool)
-    .map((question) => question.correctAnswer)
+    .map((question) => {
+      return isTermQuestion ? question[answerField] : question.correctAnswer;
+    })
     .filter(Boolean)
     .filter((answer) => {
       return normalizeAnswer(answer) !==
@@ -367,6 +498,11 @@ function createBadgeLabel(question) {
     return `Pflege · ${group}`;
   }
 
+  if (question.subject === "sturz") {
+    const group = GROUP_LABELS[question.group] ?? question.group;
+    return `Sturzprophylaxe · ${group}`;
+  }
+
   const topic = question.subject === "auge" ? "Auge" : "Ohr";
   const group = GROUP_LABELS[question.group] ?? question.group;
 
@@ -451,6 +587,9 @@ function checkAnswer() {
   answerChecked = true;
   const correct = isCorrectAnswer(userAnswer, question);
 
+  question.userAnswer = userAnswer;
+  question.wasCorrect = correct;
+
   if (correct) {
     score++;
     scoreElement.textContent = score;
@@ -503,6 +642,30 @@ function showResult() {
   resultText.textContent =
     `${TOPIC_LABELS[selectedTopic]}: Du hast ${score} von ` +
     `${quizQuestions.length} Fragen richtig beantwortet (${percentage} %).`;
+
+  renderReview();
+}
+
+function renderReview() {
+  reviewList.innerHTML = quizQuestions.map((question, index) => {
+    const statusClass = question.wasCorrect ? "correct" : "wrong";
+    const givenAnswer = question.userAnswer && question.userAnswer.trim()
+      ? question.userAnswer
+      : "(keine Antwort)";
+
+    const correctAnswerLine = question.wasCorrect
+      ? ""
+      : `<p class="review-line">Richtige Antwort: <strong>${escapeHtml(question.correctAnswer)}</strong></p>`;
+
+    return `
+      <li class="review-item ${statusClass}">
+        <p class="review-question">${index + 1}. ${escapeHtml(question.question)}</p>
+        <p class="review-line">Deine Antwort: <strong>${escapeHtml(givenAnswer)}</strong></p>
+        ${correctAnswerLine}
+        <p class="review-explanation">${escapeHtml(question.explanation)}</p>
+      </li>
+    `;
+  }).join("");
 }
 
 function resetToStart() {

@@ -12,6 +12,10 @@
 </head>
 <body>
   <main class="app-shell">
+    <div class="page-toolbar">
+      <a class="back-button" href="../index.html">← Zurück</a>
+    </div>
+
     <section class="quiz-card" aria-labelledby="app-title">
       <header class="app-header">
         <div>
@@ -68,6 +72,15 @@
               aria-pressed="false"
             >
               Pflegeversicherung
+            </button>
+
+            <button
+              class="topic-button"
+              type="button"
+              data-topic="sturz"
+              aria-pressed="false"
+            >
+              Sturzprophylaxe
             </button>
 
             <button
@@ -152,6 +165,9 @@
         <p class="eyebrow">Ergebnis</p>
         <h2>Quiz beendet</h2>
         <p id="result-text" class="result-text"></p>
+
+        <h3 class="review-title">Deine Antworten im Überblick</h3>
+        <ul id="review-list" class="review-list"></ul>
 
         <button class="primary-button" id="restart-button" type="button">
           Neues Quiz
