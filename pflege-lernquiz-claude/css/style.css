@@ -156,7 +156,7 @@ h2 {
 
 .topic-buttons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 6px;
   padding: 4px;
   background: var(--surface-soft);
@@ -165,14 +165,18 @@ h2 {
 }
 
 .topic-button {
+  min-width: 0;
   min-height: 42px;
-  padding: 9px 14px;
+  padding: 9px 10px;
   color: var(--muted);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 5px;
   font-weight: 500;
-  line-height: 1.2;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-align: center;
   transition:
     color 120ms ease,
     background-color 120ms ease,
