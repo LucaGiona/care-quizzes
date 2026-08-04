@@ -42,7 +42,15 @@ const GROUP_LABELS = {
   nach_sturz: "Nach einem Sturz",
   grundsaetze: "Grundsätze",
   umgang_hoerbeeintraechtigung: "Umgang mit Hörbeeinträchtigung",
-  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung"
+  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung",
+  augenmedikamente: "Augenmedikamente",
+  augenerkrankungen: "Augenerkrankungen",
+  traenenwege: "Tränenwege",
+  pupillenreaktion: "Pupillenreaktion",
+  presbyakusis: "Presbyakusis",
+  wohnformen: "Wohnformen",
+  kurzzeitpflege: "Kurzzeitpflege",
+  pflegebeduerftigkeit: "Pflegebedürftigkeit"
 };
 
 const TOPIC_LABELS = {
@@ -68,13 +76,15 @@ async function loadQuizData() {
       earResponse,
       careResponse,
       fallPreventionResponse,
-      goldenRulesResponse
+      goldenRulesResponse,
+      summaryResponse
     ] = await Promise.all([
       fetch("./data/auge.json"),
       fetch("./data/ohr.json"),
       fetch("./data/pflegeversicherung.json"),
       fetch("./data/sturzprophylaxe.json"),
-      fetch("./data/goldene_regeln.json")
+      fetch("./data/goldene_regeln.json"),
+      fetch("./data/lernzusammenfassung_zusatz.json")
     ]);
 
     if (
@@ -82,7 +92,8 @@ async function loadQuizData() {
       !earResponse.ok ||
       !careResponse.ok ||
       !fallPreventionResponse.ok ||
-      !goldenRulesResponse.ok
+      !goldenRulesResponse.ok ||
+      !summaryResponse.ok
     ) {
       throw new Error("Die Quizdaten konnten nicht vollständig geladen werden.");
     }
@@ -92,13 +103,15 @@ async function loadQuizData() {
       earTerms,
       careQuestions,
       fallPreventionQuestions,
-      goldenRuleQuestions
+      goldenRuleQuestions,
+      summaryQuestions
     ] = await Promise.all([
       eyeResponse.json(),
       earResponse.json(),
       careResponse.json(),
       fallPreventionResponse.json(),
-      goldenRulesResponse.json()
+      goldenRulesResponse.json(),
+      summaryResponse.json()
     ]);
 
     allQuestions = [
@@ -106,7 +119,8 @@ async function loadQuizData() {
       ...normalizeTerms(earTerms, "ohr"),
       ...normalizeCareQuestions(careQuestions),
       ...normalizeFallPreventionQuestions(fallPreventionQuestions),
-      ...normalizeGoldenRuleQuestions(goldenRuleQuestions)
+      ...normalizeGoldenRuleQuestions(goldenRuleQuestions),
+      ...normalizeSummaryQuestions(summaryQuestions)
     ];
 
     startButton.disabled = false;
@@ -173,6 +187,26 @@ function normalizeGoldenRuleQuestions(questions) {
   });
 }
 
+function normalizeSummaryQuestions(questions) {
+  return questions.flatMap((question) => {
+    if (
+      question.bereich !== "auge" &&
+      question.bereich !== "ohr" &&
+      question.bereich !== "pflege"
+    ) {
+      console.warn(
+        "Unbekannter Bereich in lernzusammenfassung_zusatz.json",
+        question
+      );
+      return [];
+    }
+
+    return normalizeKnowledgeQuestions([question], question.bereich, {
+      uidNamespace: `zusatz-${question.bereich}`
+    });
+  });
+}
+
 function normalizeKnowledgeQuestions(
   questions,
   subject,
@@ -216,19 +250,40 @@ function selectTopic(topic) {
 }
 
 function updateCategoryOptions() {
-  const eyeGroups = ["anatomie", "erkrankung", "umgang_sehbeeintraechtigung"];
-  const earGroups = ["anatomie", "erkrankung", "umgang_hoerbeeintraechtigung"];
+  const eyeGroups = [
+    "anatomie",
+    "erkrankung",
+    "umgang_sehbeeintraechtigung",
+    "augenmedikamente",
+    "augenerkrankungen",
+    "traenenwege",
+    "pupillenreaktion"
+  ];
+  const earGroups = [
+    "anatomie",
+    "erkrankung",
+    "umgang_hoerbeeintraechtigung",
+    "presbyakusis"
+  ];
   const sensoryOrganGroups = [
     "anatomie",
     "erkrankung",
     "umgang_sehbeeintraechtigung",
-    "umgang_hoerbeeintraechtigung"
+    "umgang_hoerbeeintraechtigung",
+    "augenmedikamente",
+    "augenerkrankungen",
+    "traenenwege",
+    "pupillenreaktion",
+    "presbyakusis"
   ];
   const careGroups = [
     "pflegeversicherung",
     "pflegegrade",
     "leistungen",
-    "entlassungsmanagement"
+    "entlassungsmanagement",
+    "wohnformen",
+    "kurzzeitpflege",
+    "pflegebeduerftigkeit"
   ];
   const fallPreventionGroups = [
     "risikofaktoren",
