@@ -170,6 +170,24 @@ h2 {
   border-radius: var(--radius-medium);
 }
 
+#topic-buttons,
+#category-buttons {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.topic-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.topic-button--alle {
+  align-self: flex-start;
+  width: 25%;
+  min-width: 140px;
+}
+
 .topic-button {
   min-height: 42px;
   padding: 9px 16px;

@@ -71,7 +71,7 @@ const SUBJECT_EMOJI = {
 
 let allQuestions = [];
 let quizQuestions = [];
-let selectedTopic = "auge";
+let selectedTopic = "alle";
 let selectedCategory = "alle";
 let selectedMode = "gemischt";
 let currentQuestionIndex = 0;
@@ -335,17 +335,23 @@ function updateCategoryOptions() {
     createCategoryButton("alle", "Alle Bereiche")
   );
 
+  const categoryButtonsRow = document.createElement("div");
+  categoryButtonsRow.className = "topic-buttons-row";
+
   groups.forEach((group) => {
-    categoryButtonsContainer.append(
+    categoryButtonsRow.append(
       createCategoryButton(group, GROUP_LABELS[group])
     );
   });
+
+  categoryButtonsContainer.append(categoryButtonsRow);
 }
 
 function createCategoryButton(value, label) {
   const button = document.createElement("button");
   button.type = "button";
-  button.className = value === "alle" ? "topic-button is-active" : "topic-button";
+  button.className =
+    value === "alle" ? "topic-button topic-button--alle is-active" : "topic-button";
   button.dataset.category = value;
   button.setAttribute("aria-pressed", String(value === "alle"));
   button.textContent = label;
