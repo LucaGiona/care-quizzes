@@ -19,6 +19,7 @@
     <section class="quiz-card" aria-labelledby="app-title">
       <header class="app-header">
         <div>
+          <p class="app-icons">👁️ 👂 🏥</p>
           <p class="eyebrow">Lernprojekt mit HTML, CSS und JavaScript</p>
           <h1 id="app-title">Pflege-Lernquiz</h1>
         </div>
@@ -37,14 +38,14 @@
         <div class="topic-field">
           <span class="field-label">Thema</span>
 
-          <div class="topic-buttons" role="group" aria-label="Thema auswählen">
+          <div id="topic-buttons" class="topic-buttons" role="group" aria-label="Thema auswählen">
             <button
               class="topic-button is-active"
               type="button"
               data-topic="auge"
               aria-pressed="true"
             >
-              Auge
+              Auge 👁️
             </button>
 
             <button
@@ -53,7 +54,7 @@
               data-topic="ohr"
               aria-pressed="false"
             >
-              Ohr
+              Ohr 👂
             </button>
 
             <button
@@ -62,7 +63,7 @@
               data-topic="sinnesorgane"
               aria-pressed="false"
             >
-              Auge &amp; Ohr
+              Auge &amp; Ohr 👁️👂
             </button>
 
             <button
@@ -71,7 +72,7 @@
               data-topic="pflege"
               aria-pressed="false"
             >
-              Pflegeversicherung
+              Pflegeversicherung 🏥
             </button>
 
             <button
@@ -80,7 +81,7 @@
               data-topic="sturz"
               aria-pressed="false"
             >
-              Sturzprophylaxe
+              Sturzprophylaxe 🦯
             </button>
 
             <button
@@ -89,39 +90,56 @@
               data-topic="alle"
               aria-pressed="false"
             >
-              Alle Themen
+              Alle Themen 🧩
             </button>
           </div>
         </div>
 
-        <div class="settings-grid">
-          <label>
-            Bereich
-            <select id="category-select">
-              <option value="alle">Alle Bereiche</option>
-              <option value="anatomie">Anatomie</option>
-              <option value="erkrankung">Erkrankungen</option>
-            </select>
-          </label>
+        <div class="topic-field">
+          <span class="field-label">Bereich</span>
+          <div id="category-buttons" class="topic-buttons" role="group" aria-label="Bereich auswählen"></div>
+        </div>
 
-          <label>
-            Fragetyp
-            <select id="mode-select">
-              <option value="gemischt">Gemischt</option>
-              <option value="multiple-choice">Multiple Choice</option>
-              <option value="text">Texteingabe</option>
-            </select>
-          </label>
+        <div class="topic-field">
+          <span class="field-label">Fragetyp</span>
+          <div id="mode-buttons" class="topic-buttons" role="group" aria-label="Fragetyp auswählen">
+            <button
+              class="topic-button is-active"
+              type="button"
+              data-mode="gemischt"
+              aria-pressed="true"
+            >
+              Gemischt
+            </button>
 
-          <label>
-            Anzahl Fragen
-            <select id="amount-select">
-              <option value="5">5 Fragen</option>
-              <option value="10" selected>10 Fragen</option>
-              <option value="15">15 Fragen</option>
-              <option value="20">20 Fragen</option>
-            </select>
-          </label>
+            <button
+              class="topic-button"
+              type="button"
+              data-mode="multiple-choice"
+              aria-pressed="false"
+            >
+              Multiple Choice
+            </button>
+
+            <button
+              class="topic-button"
+              type="button"
+              data-mode="text"
+              aria-pressed="false"
+            >
+              Texteingabe
+            </button>
+          </div>
+        </div>
+
+        <div class="topic-field">
+          <label for="amount-select" class="field-label">Anzahl Fragen</label>
+          <select id="amount-select">
+            <option value="5">5 Fragen</option>
+            <option value="10" selected>10 Fragen</option>
+            <option value="15">15 Fragen</option>
+            <option value="20">20 Fragen</option>
+          </select>
         </div>
 
         <button class="primary-button" id="start-button" type="button" disabled>
@@ -139,8 +157,10 @@
           <div id="progress-bar" class="progress-bar"></div>
         </div>
 
-        <p id="question-type" class="question-type"></p>
-        <h2 id="question"></h2>
+        <div class="question-box">
+          <p id="question-type" class="question-type"></p>
+          <h2 id="question"></h2>
+        </div>
 
         <div id="answer-area" class="answer-area"></div>
 

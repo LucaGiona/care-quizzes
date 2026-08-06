@@ -2,9 +2,9 @@ const startScreen = document.querySelector("#start-screen");
 const quizScreen = document.querySelector("#quiz-screen");
 const resultScreen = document.querySelector("#result-screen");
 
-const topicButtons = document.querySelectorAll(".topic-button");
-const categorySelect = document.querySelector("#category-select");
-const modeSelect = document.querySelector("#mode-select");
+const topicButtons = document.querySelectorAll("#topic-buttons .topic-button");
+const categoryButtonsContainer = document.querySelector("#category-buttons");
+const modeButtons = document.querySelectorAll("#mode-buttons .topic-button");
 const amountSelect = document.querySelector("#amount-select");
 
 const startButton = document.querySelector("#start-button");
@@ -62,9 +62,18 @@ const TOPIC_LABELS = {
   alle: "Alle Themen"
 };
 
+const SUBJECT_EMOJI = {
+  auge: "👁️",
+  ohr: "👂",
+  pflege: "🏥",
+  sturz: "🦯"
+};
+
 let allQuestions = [];
 let quizQuestions = [];
 let selectedTopic = "auge";
+let selectedCategory = "alle";
+let selectedMode = "gemischt";
 let currentQuestionIndex = 0;
 let score = 0;
 let answerChecked = false;
@@ -320,18 +329,48 @@ function updateCategoryOptions() {
     groups = [...sensoryOrganGroups, ...careGroups, ...fallPreventionGroups];
   }
 
-  categorySelect.innerHTML = "";
-
-  const allOption = document.createElement("option");
-  allOption.value = "alle";
-  allOption.textContent = "Alle Bereiche";
-  categorySelect.append(allOption);
+  selectedCategory = "alle";
+  categoryButtonsContainer.innerHTML = "";
+  categoryButtonsContainer.append(
+    createCategoryButton("alle", "Alle Bereiche")
+  );
 
   groups.forEach((group) => {
-    const option = document.createElement("option");
-    option.value = group;
-    option.textContent = GROUP_LABELS[group];
-    categorySelect.append(option);
+    categoryButtonsContainer.append(
+      createCategoryButton(group, GROUP_LABELS[group])
+    );
+  });
+}
+
+function createCategoryButton(value, label) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = value === "alle" ? "topic-button is-active" : "topic-button";
+  button.dataset.category = value;
+  button.setAttribute("aria-pressed", String(value === "alle"));
+  button.textContent = label;
+  button.addEventListener("click", () => selectCategory(value));
+
+  return button;
+}
+
+function selectCategory(category) {
+  selectedCategory = category;
+
+  categoryButtonsContainer.querySelectorAll(".topic-button").forEach((button) => {
+    const isActive = button.dataset.category === category;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function selectMode(mode) {
+  selectedMode = mode;
+
+  modeButtons.forEach((button) => {
+    const isActive = button.dataset.mode === mode;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
 }
 
@@ -369,7 +408,7 @@ function getQuestionMode(question, selectedMode) {
 }
 
 function getFilteredQuestions() {
-  const selectedGroup = categorySelect.value;
+  const selectedGroup = selectedCategory;
 
   return allQuestions.filter((question) => {
     const matchesTopic =
@@ -484,7 +523,6 @@ function createAnswerOptions(correctQuestion, availableQuestions) {
 }
 
 function startQuiz() {
-  const selectedMode = modeSelect.value;
   const selectedAmount = Number(amountSelect.value);
   const filteredQuestions = getFilteredQuestions();
 
@@ -548,20 +586,22 @@ function showQuestion() {
 }
 
 function createBadgeLabel(question) {
+  const emoji = SUBJECT_EMOJI[question.subject] ?? "";
+
   if (question.subject === "pflege") {
     const group = GROUP_LABELS[question.group] ?? question.group;
-    return `Pflege · ${group}`;
+    return `${emoji} Pflege · ${group}`;
   }
 
   if (question.subject === "sturz") {
     const group = GROUP_LABELS[question.group] ?? question.group;
-    return `Sturzprophylaxe · ${group}`;
+    return `${emoji} Sturzprophylaxe · ${group}`;
   }
 
   const topic = question.subject === "auge" ? "Auge" : "Ohr";
   const group = GROUP_LABELS[question.group] ?? question.group;
 
-  return `${topic} · ${group}`;
+  return `${emoji} ${topic} · ${group}`;
 }
 
 function renderMultipleChoice(question) {
@@ -744,6 +784,12 @@ function escapeHtml(value) {
 topicButtons.forEach((button) => {
   button.addEventListener("click", () => {
     selectTopic(button.dataset.topic);
+  });
+});
+
+modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    selectMode(button.dataset.mode);
   });
 });
 
