@@ -4,7 +4,7 @@
 
 In dieser Datei wird die Entwicklung des Projekts dokumentiert: Ziel, verwendete KI/Werkzeuge, Prompt, Ergebnis, Schwierigkeiten, Lösung, Erkenntnisse.
 
-Vollständige Prompts liegen zusätzlich im Ordner `prompts/`. Die Vorlage für neue Einträge liegt in `templates/entry-template.md`.
+Die Vorlage für neue Einträge liegt in `templates/entry-template.md`.
 
 ---
 
@@ -19,10 +19,10 @@ Das Projekt verbindet zwei Lernbereiche: Pflegewissen lernen und wiederholen (du
 
 ### Pflegefachliche Themen
 
-- Auge (Anatomie, Erkrankungen, Augenmedikamente, Miosis/Mydriasis, Tränenwege)
+- Auge (Anatomie, Erkrankungen, Augenmedikamente, Tränenwege)
 - Ohr (Anatomie, Erkrankungen, Presbyakusis)
 - Pflegeversicherung, Pflegegrade, Leistungen der Pflegeversicherung
-- Kurzzeitpflege, Entlassungsmanagement, Überleitungsmanagement
+- Entlassungsmanagement, Überleitungsmanagement
 - Wohnformen im Alter, Sturzprophylaxe
 - Umgang mit Seh- und Hörbeeinträchtigungen
 
@@ -36,7 +36,12 @@ HTML, CSS, JavaScript, JSON, Git/GitHub, Projektarchitektur, responsives Webdesi
 
 ## 1. Grundaufbau des Quiz
 
-**Ziel:** Browserbasierte Lernanwendung mit HTML, CSS, JavaScript und JSON. Vier Antwortmöglichkeiten, genau eine richtig; Fachbegriffe als Multiple Choice oder Texteingabe; mehrere Pflegethemen; Punkte/Fortschritt; Erklärung nach jeder Antwort.
+**Ziel:**   
+Browserbasierte Lernanwendung mit HTML, CSS, JavaScript und JSON.  
+Vier Antwortmöglichkeiten, genau eine richtig;   
+Fachbegriffe als Multiple Choice oder Texteingabe;  
+mehrere Pflegethemen oder anatomisches Wissen stehen zur Auswahl;  
+Punkte/Fortschritt; Erklärung nach jeder Antwort.
 
 **KI/Werkzeuge:** ChatGPT, Claude · VS Code, Live Server, Git, GitHub
 
@@ -46,7 +51,14 @@ Erstelle ein Quiz mit HTML, CSS und JavaScript. Zu jeder Frage vier
 Antworten, eine richtig. Bei Fachbegriffen zusätzlich Texteingabe.
 Quizdaten aus JSON-Dateien laden. Themen zunächst Auge und Ohr.
 ```
-Vollständig: `prompts/001-grundaufbau-quiz.md`
+
+**kurzer erster Vergleich chatGPT/claude** 
+
+Der erste Prompt war bewusst sehr einfach gewählt für beide KIs.
+Das Resultat vor allem in CSS war schon sehr unterschiedlich. Das Design vin chatGPT glich dem bekannten Muster gängiger Apps. Große Buttons einfache Farbgebung. Gern wurde mit shadowing und border Farben gearbeitet. Der Eindruck war also modern und gängig. 
+Claude hingegen hatte beim ersten prompt eher ein Code orientierten Aufbau. Sprich es sah so aus wie die gitHub Page. Also buttons waren so gelegt, dass sie farblich herausstachen als default. Auch wurde wenig mit select gearbeitet.
+Bei Claude kamen auch Emojis zum Einsatz, was bei chatGPT nicht der Fall war. Dies wiederum ist wohl bedingt, dass ich chatGPT in der Vergangenheit bei Textzusammenfassungen stets ermahnt habe, ohne Emojis zu arbeiten. Dies hat sich wohl die KI gemerkt.
+
 
 **Ergebnis:** `index.html`, `css/style.css`, `js/app.js`, `data/auge.json`, `data/ohr.json` (weitere JSON-Dateien folgten später).
 
@@ -90,7 +102,8 @@ Vollständig: `prompts/002-gemischte-fragerichtung.md`
 - [ ] Alternativbegriffe werden akzeptiert
 - [ ] Pflegeversicherungsfragen funktionieren weiterhin
 
-**Reflexion:** noch offen – nach dem Test ergänzen (was funktionierte, was musste korrigiert werden, was habe ich gelernt).
+**Reflexion:** Beide haben eine funktioierenden Code zurück geliefert. Die json ist jeweils durch Zusammenfassungen von Buchvorlagen oder Skripte aus youtube Videos entstanden.
+Für die Bedürfnisse einer Pflegefachkraftausbildung manchmal zu spezifisch und detailliert.
 
 ---
 
@@ -112,6 +125,8 @@ Vollständig: `prompts/002-gemischte-fragerichtung.md`
 
 **Nächste Schritte:** neue JSON-Datei in `app.js` laden, Themenfilter ergänzen, im Browser testen, fachlich prüfen, Duplikate prüfen.
 
+Die Schritte wurden erfolgreich durchgeführt.
+
 ---
 
 
@@ -122,9 +137,13 @@ Vollständig: `prompts/002-gemischte-fragerichtung.md`
 
 **Kriterien:** Verständnis des Prompts, Qualität der Architektur, Qualität/Verständlichkeit des Codes, Anzahl nötiger Korrekturen, Umgang mit bestehenden Dateien, Fehleranfälligkeit, Benutzerfreundlichkeit des Ergebnisses.
 
-**Beobachtungen:** noch offen (ChatGPT / Codex / Claude).
+**Beobachtungen:** Interessant war dass ich den ersten Prompt wegen synchonisazions Schwierigkeiten von claude als Endergebnis nicht mehr hatte. Heißt ich muss mir den Ordner dann via Mail zuschicken lassen. Dies geschah aber relativ spät im Verlauf der Arbeit. Aber eben Interessant war, das claude in VSC dann irgendwie das Design von chatGPT übernommen hat. Die Emojis waren nicht mehr vorhanden. Auch die UI Struktur ist die selbe geblieben. Auf prompts es eher wie eine gitHub Seite aussehen zu lassen, hat claude nicht wirklich reagiert.
+Claude hat am Ende des Quizes von sich aus jeweils ein Zusammenfassung aller Fragen gemacht. Heisst man konnte am Schluss erkennen, welche Frage man richtig oder falsch beantwortet hat, inklusiver der richtigen antworten. Dies ist für den Lerneffekt besonders gut.
 
-**Fazit:** noch offen.
+**Fazit:** Grundsätzlich haben beide KIs brauchbare und funktionierende Apps geliefert. Claude hat in der UX etwas weniger Code gebraucht. Bei beiden ist der js Code aber gut lesbar. Auch die DB Struktur ist bei beiden immer sehr gut übernommen worden.
+Für weitere Lernappthemen wird der erste Prompt präziser sein. Vor allem was die CSS betrifft. Beide waren nicht wirklich responsiv zum Beispiel. Dies musste geändert werden. Auch die Reihenfolge der Button zu den Lernthemen war verbesserungswürdig.
+Die json sollte von Anfang an die Möglichkeit haben, Fachbegriffe und Deutschbegriffe im Wechsel zu erfragen. 
+Bei den Texteingaben sollten noch weiter Möglichkeiten, wie Schreibfehler und Stichworte ins Auge gefasst werden.
 
 ---
 
