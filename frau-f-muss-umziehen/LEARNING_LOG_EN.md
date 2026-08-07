@@ -2,9 +2,11 @@
 
 *[Deutsche Version](LEARNING_LOG.md)*
 
-This file documents the progress of the project: goal, AI/tools used, prompt, outcome, difficulties, solution, and lessons learned.
+This file documents the progress of the project: goal, AI/tools used, prompt, outcome, difficulties, solution, lessons learned.
 
-Full prompts are additionally stored in the `prompts/` folder. The template for new entries is in `templates/entry-template_EN.md`.
+The template for new entries is in `templates/entry-template_EN.md`.
+
+**Translate through AI**
 
 ---
 
@@ -19,10 +21,10 @@ The project combines two learning areas: learning and reviewing care-nursing kno
 
 ### Nursing/care topics
 
-- Eye (anatomy, diseases, eye medication, miosis/mydriasis, tear ducts)
+- Eye (anatomy, diseases, eye medication, tear ducts)
 - Ear (anatomy, diseases, presbycusis)
 - Long-term care insurance, care levels, long-term care insurance benefits
-- Short-term care, discharge management, transitional care management
+- Discharge management, transitional care management
 - Living arrangements in old age, fall prevention
 - Dealing with visual and hearing impairments
 
@@ -36,24 +38,36 @@ HTML, CSS, JavaScript, JSON, Git/GitHub, project architecture, responsive web de
 
 ## 1. Basic Quiz Setup
 
-**Goal:** Browser-based learning app with HTML, CSS, JavaScript, and JSON. Four answer options, exactly one correct; terms as multiple choice or free text; multiple care topics; score/progress; explanation after each answer.
+**Goal:**
+Browser-based learning app with HTML, CSS, JavaScript, and JSON.
+Four answer options, exactly one correct;
+technical terms as multiple choice or free-text input;
+a choice of several care topics or anatomical knowledge;
+score/progress; explanation after each answer.
 
 **AI/Tools:** ChatGPT, Claude · VS Code, Live Server, Git, GitHub
 
 **Prompt (paraphrased):**
+
 ```text
 Build a quiz with HTML, CSS, and JavaScript. Each question shows four
 answers, one correct. For technical terms, also allow free-text input.
 Load quiz data from JSON files. Topics initially: eye and ear.
 ```
-Full version: `prompts/001-basic-quiz-setup.md`
+
+**Brief first comparison ChatGPT/Claude**
+The first prompt was deliberately kept very simple for both AIs.
+The result, especially in CSS, was already quite different. ChatGPT's design resembled the familiar pattern of common apps: large buttons, simple color scheme. It liked to work with shadowing and border colors. The overall impression was therefore modern and conventional.
+Claude, on the other hand, had a more code-oriented layout for the first prompt. In other words, it looked like the GitHub page. Buttons, for example, were placed so that they stood out in color by default. Also, little use was made of select elements.
+Claude also used emojis, which was not the case with ChatGPT. This is probably because in the past I always told ChatGPT, when summarizing texts, to work without emojis. The AI apparently remembered this.
 
 **Result:** `index.html`, `css/style.css`, `js/app.js`, `data/auge.json`, `data/ohr.json` (more JSON files were added later).
 
 **Architecture:** HTML = structure, CSS = styling, JavaScript = logic, JSON = questions/content.
 
 **Difficulties → Solution:**
-- JSON couldn't be loaded reliably via `fetch()` when opening the HTML file directly → started the app with Live Server instead.
+
+- JSON couldn't be loaded via `fetch()` when opening the HTML file directly → started the app with Live Server instead.
 - Unclear which data should be stored as terms vs. full questions → separate JSON structures for terms (eye/ear) and full care-nursing questions.
 - Wrong multiple-choice answers had to be generated sensibly.
 
@@ -70,26 +84,30 @@ Full version: `prompts/001-basic-quiz-setup.md`
 **AI:** Codex in VS Code, Claude directly in VS Code
 
 **Prompt (short version):**
+
 ```text
 Adjust the existing quiz app so that terms from auge.json and ohr.json
 are randomly quizzed in both directions. For German→term, the answer
 options must be terms; for term→German, the answer options must be
 German words. Long-term care insurance questions must not be changed.
 ```
+
 Full version: `prompts/002-mixed-question-direction.md`
 
-**Expected change:** `js/app.js`, possibly a new internal property `answerDirection: "term" | "german"`.
+**Expected change:** `js/app.js`, possibly a new property `answerDirection: "term" | "german"`.
 
 **Requirements:** Direction is chosen anew for each round, both directions occur, the correct answer appears only once, wrong answers match the expected answer type, alternative spellings are accepted for free-text input, long-term care insurance questions remain unchanged.
 
 **Result checklist (fill in after testing):**
+
 - [ ] German → term works
 - [ ] Term → German works
 - [ ] Multiple choice and free text work in both directions
 - [ ] Alternative terms are accepted
 - [ ] Long-term care insurance questions still work
 
-**Reflection:** still open – fill in after testing (what worked, what needed correcting, what I learned).
+**Reflection:** Both delivered working code. The JSON data was in each case created from summaries of textbook material or transcripts of YouTube videos.
+For the needs of nursing/care training, this was sometimes too specific and detailed.
 
 ---
 
@@ -97,7 +115,7 @@ Full version: `prompts/002-mixed-question-direction.md`
 
 **Goal:** Compare existing JSON files with the study summary and add missing content as new quiz questions.
 
-**AI:** ChatGPT
+**AI:** ChatGPT - Claude
 
 **Files used:** `lernzusammenfassung.pdf`, `auge.json`, `ohr.json`, `pflegeversicherung.json`, `goldene_regeln.json`, `sturzprophylaxe.json`
 
@@ -110,43 +128,23 @@ Full version: `prompts/002-mixed-question-direction.md`
 **Difficulties → Solution:** Existing JSON files use different structures (terms vs. full questions); new questions must not duplicate existing content → new file in the format of full quiz questions, existing term data unchanged, topic/category distinguished via dedicated fields.
 
 **Next steps:** load the new JSON file in `app.js`, add a topic filter, test in the browser, review content accuracy, check for duplicates.
+These steps were carried out successfully.
 
 ---
 
-## 4. Restructuring into a Collection Repository
-
-**Goal:** Manage several standalone quiz projects together in the `care-quizzes` repository.
-
-**Structure:**
-```text
-care-quizzes/
-├── .git/  .gitignore  README.md  README_EN.md
-├── .github/pull_request_template.md
-├── frau-f-muss-umziehen/
-│   ├── README.md  LEARNING_LOG.md  prompts/  index.html  css/
-│   ├── pflege-lernquiz-chatGPT/
-│   └── pflege-lernquiz-claude/
-├── herz-quiz/  (later)
-└── weitere-quizprojekte/
-```
-
-`care-quizzes` is the Git root folder, the GitHub repository, and the collection folder. Each quiz subfolder can have its own `index.html` and be deployed separately (e.g. on Netlify).
-
-**Lessons learned:** `.git` belongs only in the root folder; the `.gitignore` there applies to all subfolders; individual quiz projects don't need their own Git repo; a central `index.html` in the root folder isn't required for now.
-
-**Status:** Repo renamed, remote updated, first quiz placed in its folder, root-level `.gitignore` in place. Open: main README (DE/EN), pull request template, additional quiz projects.
-
----
-
-## 5. Comparing Different AI Systems
+## 4. Comparing Different AI Systems
 
 **Goal:** Use different AI systems (ChatGPT, Codex, Claude, possibly others) for comparable development tasks.
 
 **Criteria:** understanding of the prompt, quality of architecture, code quality/readability, number of corrections needed, handling of existing files, error-proneness, usability of the result.
 
-**Observations:** still open (ChatGPT / Codex / Claude).
+**Observations:** It was interesting that, due to sync issues, I no longer had Claude's first prompt as an end result. This meant I had to have the folder sent to me by email. This happened relatively late in the process, though. But what was interesting was that Claude in VS Code somehow then adopted ChatGPT's design. The emojis were no longer present. The UI structure also stayed the same. Claude didn't really respond to prompts asking it to make the design look more like a GitHub page.
+At the end of the quiz, Claude on its own produced a summary of all the questions. This meant that at the end you could see which questions you had answered correctly or incorrectly, including the correct answers. This is especially good for the learning effect.
 
-**Conclusion:** still open.
+**Conclusion:** Basically, both AIs delivered usable, working apps. Claude needed somewhat less code for the UX. In both cases, the JS code is well readable. The data structure was also very well carried over consistently by both.
+For further learning-app topics, the first prompt will be more precise, especially regarding CSS. Neither result was really responsive, for example — this had to be fixed. The order of the buttons for the learning topics also needed improvement.
+The JSON should have the ability, from the very start, to alternate between asking for technical terms and German terms.
+For free-text input, further options should be considered, such as handling typos and keyword-based matching.
 
 ---
 

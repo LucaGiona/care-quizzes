@@ -18,6 +18,7 @@ Diesen Abschnitt kopieren und in `LEARNING_LOG.md` einfügen.
 **KI/Werkzeuge:** –
 
 **Prompt (vollständig oder Verweis auf `prompts/dateiname.md`):**
+
 ```text
 Prompt hier einfügen
 ```
@@ -33,6 +34,7 @@ Prompt hier einfügen
 **Manuelle Änderungen:** Was musste nach dem KI-Ergebnis selbst angepasst werden?
 
 **Prüfung:**
+
 - [ ] Anwendung im Browser getestet
 - [ ] Browser-Konsole geprüft
 - [ ] JSON-Dateien validiert

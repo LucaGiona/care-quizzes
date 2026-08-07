@@ -46,6 +46,7 @@ Punkte/Fortschritt; Erklärung nach jeder Antwort.
 **KI/Werkzeuge:** ChatGPT, Claude · VS Code, Live Server, Git, GitHub
 
 **Prompt (sinngemäß):**
+
 ```text
 Erstelle ein Quiz mit HTML, CSS und JavaScript. Zu jeder Frage vier
 Antworten, eine richtig. Bei Fachbegriffen zusätzlich Texteingabe.
@@ -59,12 +60,12 @@ Das Resultat vor allem in CSS war schon sehr unterschiedlich. Das Design vin cha
 Claude hingegen hatte beim ersten prompt eher ein Code orientierten Aufbau. Sprich es sah so aus wie die gitHub Page. Also buttons waren so gelegt, dass sie farblich herausstachen als default. Auch wurde wenig mit select gearbeitet.
 Bei Claude kamen auch Emojis zum Einsatz, was bei chatGPT nicht der Fall war. Dies wiederum ist wohl bedingt, dass ich chatGPT in der Vergangenheit bei Textzusammenfassungen stets ermahnt habe, ohne Emojis zu arbeiten. Dies hat sich wohl die KI gemerkt.
 
-
 **Ergebnis:** `index.html`, `css/style.css`, `js/app.js`, `data/auge.json`, `data/ohr.json` (weitere JSON-Dateien folgten später).
 
 **Architektur:** HTML = Struktur, CSS = Gestaltung, JavaScript = Logik, JSON = Fragen/Lerninhalte.
 
 **Schwierigkeiten → Lösung:**
+
 - JSON ließ sich beim direkten Öffnen der HTML-Datei nicht per `fetch()` laden → Start über Live Server.
 - Unklar, was als Fachbegriff vs. vollständige Frage gespeichert wird → getrennte JSON-Strukturen für Begriffe (Auge/Ohr) und vollständige Pflegefragen.
 - Falsche MC-Antworten mussten sinnvoll erzeugt werden.
@@ -82,6 +83,7 @@ Bei Claude kamen auch Emojis zum Einsatz, was bei chatGPT nicht der Fall war. Di
 **KI:** Codex in VS Code, Claude direkt in VS Code
 
 **Prompt (Kurzfassung):**
+
 ```text
 Passe die bestehende Quiz-App so an, dass Fachbegriffe aus auge.json
 und ohr.json zufällig in beide Richtungen abgefragt werden. Bei
@@ -89,6 +91,7 @@ Deutsch→Fachbegriff müssen die Antworten Fachbegriffe sein, bei
 Fachbegriff→Deutsch deutsche Begriffe. Pflegeversicherungsfragen
 dürfen nicht verändert werden.
 ```
+
 Vollständig: `prompts/002-gemischte-fragerichtung.md`
 
 **Erwartete Änderung:** `js/app.js`, evtl. neue Eigenschaft `answerDirection: "fachbegriff" | "deutsch"`.
@@ -96,6 +99,7 @@ Vollständig: `prompts/002-gemischte-fragerichtung.md`
 **Anforderungen:** Richtung wird pro Runde neu bestimmt, beide Richtungen kommen vor, richtige Antwort erscheint nur einmal, falsche Antworten passen zum Antworttyp, Alternativschreibweisen werden bei Texteingabe akzeptiert, Pflegeversicherungsfragen bleiben unverändert.
 
 **Ergebnis-Checkliste (nach Test ausfüllen):**
+
 - [ ] Deutsch → Fachbegriff funktioniert
 - [ ] Fachbegriff → Deutsch funktioniert
 - [ ] MC und Texteingabe funktionieren in beiden Richtungen
@@ -128,8 +132,6 @@ Für die Bedürfnisse einer Pflegefachkraftausbildung manchmal zu spezifisch und
 Die Schritte wurden erfolgreich durchgeführt.
 
 ---
-
-
 
 ## 4. Vergleich verschiedener KI-Systeme
 

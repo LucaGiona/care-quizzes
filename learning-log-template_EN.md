@@ -18,6 +18,7 @@ Copy this section and paste it into `LEARNING_LOG_EN.md`.
 **AI/Tools:** –
 
 **Prompt (full text, or reference to `prompts/filename.md`):**
+
 ```text
 Insert prompt here
 ```
@@ -33,6 +34,7 @@ Insert prompt here
 **Manual changes:** What had to be adjusted by hand after the AI output?
 
 **Review:**
+
 - [ ] Tested the app in the browser
 - [ ] Checked the browser console
 - [ ] Validated JSON files
