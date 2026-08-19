@@ -66,17 +66,21 @@ care-quizzes/
 ├── README.md
 ├── README_EN.md
 │
-├── frau-f-muss-umziehen/
-│   ├── README.md
-│   ├── index.html
-│   ├── css/
-│   ├── js/
-│   └── data/
+├── index.html          # Landing Page mit Übersicht aller Quizze
+├── css/
+├── js/                  # projects.js listet alle Quizprojekte
 │
-├── herz-quiz/
-│   └── später
-│
-└── weitere-projekte/
+└── quizzes/
+    ├── frau-f-muss-umziehen/
+    │   ├── README.md
+    │   ├── index.html
+    │   ├── css/
+    │   ├── js/
+    │   └── data/
+    │
+    ├── hno/
+    │
+    └── weitere-projekte/
 ```
 
 Weitere Informationen zu den einzelnen Anwendungen befinden sich im jeweiligen Projektordner.
@@ -95,7 +99,7 @@ CHANGELOG.md
 
 ### Frau F. muss umziehen
 
-Der Ordner `frau-f-muss-umziehen` enthält eine Lernanwendung zu verschiedenen Themen aus der Pflegeausbildung.
+Der Ordner `quizzes/frau-f-muss-umziehen` enthält eine Lernanwendung zu verschiedenen Themen aus der Pflegeausbildung.
 
 Behandelte Inhalte sind unter anderem:
 
@@ -139,9 +143,9 @@ Dadurch können einzelne Unterordner separat auf Plattformen wie Netlify bereitg
 Beispiele:
 
 ```text
-frau-f-muss-umziehen/
-herz-quiz/
-wundmanagement-quiz/
+quizzes/frau-f-muss-umziehen/
+quizzes/hno/
+quizzes/wundmanagement-quiz/
 ```
 
 ## Entwicklungsstatus

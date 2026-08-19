@@ -11,7 +11,7 @@ const projects = [
       "Entlassungsmanagement",
     ],
     status: "verfügbar",
-    href: "./frau-f-muss-umziehen/index.html",
+    href: "./quizzes/frau-f-muss-umziehen/index.html",
   },
   {
     title: "HNO",
@@ -19,7 +19,7 @@ const projects = [
       "Quiz rund um Hals-Nasen-Ohren-Heilkunde.",
     topics: [],
     status: "in",
-    href: "./hno/index.html",
+    href: "./quizzes/hno/index.html",
   },
   {
     title: "Fachbegriffe",
@@ -27,6 +27,6 @@ const projects = [
       "Quiz rund um Hals-Nasen-Ohren-Heilkunde.",
     topics: [],
     status: "in",
-    href: "./begriffe/index.html",
+    href: "./quizzes/begriffe/index.html",
   },
 ];

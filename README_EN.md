@@ -66,17 +66,21 @@ care-quizzes/
 ├── README.md
 ├── README_EN.md
 │
-├── frau-f-muss-umziehen/
-│   ├── README.md
-│   ├── index.html
-│   ├── css/
-│   ├── js/
-│   └── data/
+├── index.html          # landing page listing all quizzes
+├── css/
+├── js/                  # projects.js lists all quiz projects
 │
-├── herz-quiz/
-│   └── planned
-│
-└── additional-projects/
+└── quizzes/
+    ├── frau-f-muss-umziehen/
+    │   ├── README.md
+    │   ├── index.html
+    │   ├── css/
+    │   ├── js/
+    │   └── data/
+    │
+    ├── hno/
+    │
+    └── additional-projects/
 ```
 
 Further information about each application can be found in the corresponding project folder.
@@ -95,7 +99,7 @@ CHANGELOG.md
 
 ### Frau F. muss umziehen
 
-The `frau-f-muss-umziehen` folder contains a learning application covering different topics from nursing education.
+The `quizzes/frau-f-muss-umziehen` folder contains a learning application covering different topics from nursing education.
 
 Topics include:
 
@@ -139,9 +143,9 @@ This allows separate subfolders to be deployed individually on platforms such as
 Examples:
 
 ```text
-frau-f-muss-umziehen/
-herz-quiz/
-wundmanagement-quiz/
+quizzes/frau-f-muss-umziehen/
+quizzes/hno/
+quizzes/wundmanagement-quiz/
 ```
 
 ## Development status
