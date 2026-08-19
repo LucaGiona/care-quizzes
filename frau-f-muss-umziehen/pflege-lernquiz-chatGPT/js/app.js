@@ -1,65 +1,17 @@
-const startScreen = document.querySelector("#start-screen");
-const quizScreen = document.querySelector("#quiz-screen");
-const resultScreen = document.querySelector("#result-screen");
-
-const topicButtons = document.querySelectorAll(".topic-button");
-const categorySelect = document.querySelector("#category-select");
-const modeSelect = document.querySelector("#mode-select");
-const amountSelect = document.querySelector("#amount-select");
-
-const startButton = document.querySelector("#start-button");
-const checkButton = document.querySelector("#check-button");
-const nextButton = document.querySelector("#next-button");
-const quitButton = document.querySelector("#quit-button");
-const restartButton = document.querySelector("#restart-button");
-
-const scoreElement = document.querySelector("#score");
-const progressElement = document.querySelector("#progress");
-const progressBar = document.querySelector("#progress-bar");
-const categoryLabel = document.querySelector("#category-label");
-const questionTypeElement = document.querySelector("#question-type");
-const questionElement = document.querySelector("#question");
-const answerArea = document.querySelector("#answer-area");
-const feedbackElement = document.querySelector("#feedback");
-const resultText = document.querySelector("#result-text");
-
-const GROUP_LABELS = {
-  anatomie: "Anatomie",
-  erkrankung: "Erkrankungen",
-  pflegeversicherung: "Pflegeversicherung",
-  pflegegrade: "Pflegegrade",
-  leistungen: "Leistungen",
-  entlassungsmanagement: "Entlassungsmanagement",
-  risikofaktoren: "Risikofaktoren",
-  einschaetzung: "Einschätzung",
-  beratung: "Beratung",
-  mobilitaet: "Mobilität",
-  umgebung: "Umgebung",
-  hilfsmittel: "Hilfsmittel",
-  medikation: "Medikation",
-  alltag: "Alltag",
-  nach_sturz: "Nach einem Sturz",
-  grundsaetze: "Grundsätze",
-  umgang_hoerbeeintraechtigung: "Umgang mit Hörbeeinträchtigung",
-  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung",
-  presbyakusis: "Presbyakusis",
-  augenmedikamente: "Augenmedikamente",
-  traenenwege: "Tränenwege",
-  pupillenreaktion: "Pupillenreaktion",
-  augenerkrankungen: "Augenerkrankungen",
-  pflegebeduerftigkeit: "Pflegebedürftigkeit",
-  kurzzeitpflege: "Kurzzeitpflege",
-  wohnformen: "Wohnformen"
-};
-
-const TOPIC_LABELS = {
-  auge: "Auge",
-  ohr: "Ohr",
-  sinnesorgane: "Auge & Ohr",
-  pflege: "Pflegeversicherung",
-  sturz: "Sturzprophylaxe",
-  alle: "Alle Themen"
-};
+import { loadQuizData } from "./data.js";
+import { elements } from "./dom.js";
+import { buildQuiz, getFilteredQuestions, isCorrectAnswer } from "./quiz-engine.js";
+import {
+  disableInputs,
+  getUserAnswer,
+  renderQuestion,
+  selectTopicButton,
+  showQuizScreen,
+  showResult,
+  showStartScreen,
+  updateCategoryOptions
+} from "./ui.js";
+import { escapeHtml } from "./utils.js";
 
 let allQuestions = [];
 let quizQuestions = [];
@@ -68,687 +20,131 @@ let currentQuestionIndex = 0;
 let score = 0;
 let answerChecked = false;
 
-async function loadQuizData() {
-  try {
-    const [
-      eyeResponse,
-      earResponse,
-      careResponse,
-      fallPreventionResponse,
-      goldenRulesResponse,
-      learningSummaryResponse
-    ] = await Promise.all([
-      fetch("./data/auge.json"),
-      fetch("./data/ohr.json"),
-      fetch("./data/pflegeversicherung.json"),
-      fetch("./data/sturzprophylaxe.json"),
-      fetch("./data/goldene_regeln.json"),
-      fetch("./data/lernzusammenfassung_zusatz.json")
-    ]);
-
-    if (
-      !eyeResponse.ok ||
-      !earResponse.ok ||
-      !careResponse.ok ||
-      !fallPreventionResponse.ok ||
-      !goldenRulesResponse.ok ||
-      !learningSummaryResponse.ok
-    ) {
-      throw new Error("Die Quizdaten konnten nicht vollständig geladen werden.");
-    }
-
-    const [
-      eyeTerms,
-      earTerms,
-      careQuestions,
-      fallPreventionQuestions,
-      goldenRuleQuestions,
-      learningSummaryQuestions
-    ] = await Promise.all([
-      eyeResponse.json(),
-      earResponse.json(),
-      careResponse.json(),
-      fallPreventionResponse.json(),
-      goldenRulesResponse.json(),
-      learningSummaryResponse.json()
-    ]);
-
-    allQuestions = [
-      ...normalizeTerms(eyeTerms, "auge"),
-      ...normalizeTerms(earTerms, "ohr"),
-      ...normalizeCareQuestions(careQuestions),
-      ...normalizeKnowledgeQuestions(fallPreventionQuestions, "sturz"),
-      ...normalizeGoldenRuleQuestions(goldenRuleQuestions),
-      ...normalizeQuestionsByArea(
-        learningSummaryQuestions,
-        "lernzusammenfassung_zusatz.json",
-        "lernzusatz"
-      )
-    ];
-
-    startButton.disabled = false;
-    startButton.textContent = "Quiz starten";
-  } catch (error) {
-    startButton.disabled = true;
-    startButton.textContent = "Quizdaten fehlen";
-
-    startScreen.insertAdjacentHTML(
-      "beforeend",
-      `<p class="feedback wrong">
-        ${escapeHtml(error.message)}<br>
-        Starte das Projekt über einen lokalen Server, zum Beispiel mit Live Server.
-      </p>`
-    );
-
-    console.error(error);
-  }
-}
-
-function normalizeTerms(terms, subject) {
-  return terms.map((term) => ({
-    uid: `${subject}-${term.id}`,
-    subject,
-    group: term.kategorie,
-    subcategory: term.kategorie,
-    sourceKind: "term",
-    originalMode: null,
-    de: term.de,
-    fachbegriff: term.fachbegriff,
-    alternatives: term.alternativen ?? [],
-    question: "",
-    correctAnswer: term.fachbegriff,
-    acceptedAnswers: [
-      term.fachbegriff,
-      ...(term.alternativen ?? [])
-    ],
-    predefinedOptions: [],
-    explanation: term.erklaerung,
-    sourcePage: null
-  }));
-}
-
-function normalizeCareQuestions(questions) {
-  return normalizeKnowledgeQuestions(questions, "pflege");
-}
-
-function normalizeGoldenRuleQuestions(questions) {
-  return normalizeQuestionsByArea(
-    questions,
-    "goldene_regeln.json",
-    "goldene-regeln",
-    ["auge", "ohr"]
-  );
-}
-
-function normalizeQuestionsByArea(
-  questions,
-  sourceFile,
-  uidPrefix,
-  allowedAreas = ["auge", "ohr", "pflege"]
-) {
-  return questions.flatMap((question) => {
-    if (!allowedAreas.includes(question.bereich)) {
-      console.warn(`Unbekannter Bereich in ${sourceFile}`, question);
-      return [];
-    }
-
-    return normalizeKnowledgeQuestions(
-      [question],
-      question.bereich,
-      `${uidPrefix}-${question.bereich}`
-    );
-  });
-}
-
-function normalizeKnowledgeQuestions(
-  questions,
-  subject,
-  uidNamespace = subject
-) {
-  return questions.map((question) => {
-    const acceptedAnswers =
-      question.akzeptierteAntworten ??
-      (question.richtigeAntwort ? [question.richtigeAntwort] : []);
-
-    return {
-      uid: `${uidNamespace}-${question.id}`,
-      subject,
-      group: question.thema,
-      subcategory: question.kategorie,
-      sourceKind: "knowledge",
-      originalMode: question.typ,
-      question: question.frage,
-      correctAnswer:
-        question.richtigeAntwort ??
-        acceptedAnswers[0] ??
-        "",
-      acceptedAnswers,
-      predefinedOptions: question.antworten ?? [],
-      explanation: question.erklaerung,
-      sourcePage: question.quelleSeite ?? null
-    };
-  });
-}
-
 function selectTopic(topic) {
   selectedTopic = topic;
-
-  topicButtons.forEach((button) => {
-    const isActive = button.dataset.topic === topic;
-    button.classList.toggle("is-active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  });
-
-  updateCategoryOptions();
-}
-
-function updateCategoryOptions() {
-  const eyeGroups = [
-    "anatomie",
-    "erkrankung",
-    "umgang_sehbeeintraechtigung",
-    "augenmedikamente",
-    "traenenwege",
-    "pupillenreaktion",
-    "augenerkrankungen"
-  ];
-  const earGroups = [
-    "anatomie",
-    "erkrankung",
-    "umgang_hoerbeeintraechtigung",
-    "presbyakusis"
-  ];
-  const sensoryOrganGroups = [
-    "anatomie",
-    "erkrankung",
-    "umgang_sehbeeintraechtigung",
-    "umgang_hoerbeeintraechtigung",
-    "augenmedikamente",
-    "traenenwege",
-    "pupillenreaktion",
-    "augenerkrankungen",
-    "presbyakusis"
-  ];
-  const careGroups = [
-    "pflegeversicherung",
-    "pflegegrade",
-    "leistungen",
-    "entlassungsmanagement",
-    "pflegebeduerftigkeit",
-    "kurzzeitpflege",
-    "wohnformen"
-  ];
-  const fallPreventionGroups = [
-    "risikofaktoren",
-    "einschaetzung",
-    "beratung",
-    "mobilitaet",
-    "umgebung",
-    "hilfsmittel",
-    "medikation",
-    "alltag",
-    "nach_sturz",
-    "grundsaetze"
-  ];
-
-  let groups = eyeGroups;
-
-  if (selectedTopic === "ohr") {
-    groups = earGroups;
-  }
-
-  if (selectedTopic === "sinnesorgane") {
-    groups = sensoryOrganGroups;
-  }
-
-  if (selectedTopic === "pflege") {
-    groups = careGroups;
-  }
-
-  if (selectedTopic === "sturz") {
-    groups = fallPreventionGroups;
-  }
-
-  if (selectedTopic === "alle") {
-    groups = [
-      ...sensoryOrganGroups,
-      ...careGroups,
-      ...fallPreventionGroups
-    ];
-  }
-
-  categorySelect.innerHTML = "";
-
-  const allOption = document.createElement("option");
-  allOption.value = "alle";
-  allOption.textContent = "Alle Bereiche";
-  categorySelect.append(allOption);
-
-  groups.forEach((group) => {
-    const option = document.createElement("option");
-    option.value = group;
-    option.textContent = GROUP_LABELS[group];
-    categorySelect.append(option);
-  });
-}
-
-function shuffleArray(array) {
-  const shuffled = [...array];
-
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const randomIndex = Math.floor(Math.random() * (i + 1));
-
-    [shuffled[i], shuffled[randomIndex]] =
-      [shuffled[randomIndex], shuffled[i]];
-  }
-
-  return shuffled;
-}
-
-function normalizeAnswer(answer) {
-  return String(answer)
-    .trim()
-    .toLowerCase()
-    .replace(/[.,;:!?]/g, "")
-    .replace(/\s+/g, " ");
-}
-
-function getQuestionMode(question, selectedMode) {
-  if (selectedMode !== "gemischt") {
-    return selectedMode;
-  }
-
-  if (question.originalMode) {
-    return question.originalMode;
-  }
-
-  return Math.random() < 0.5 ? "multiple-choice" : "text";
-}
-
-function getFilteredQuestions() {
-  const selectedGroup = categorySelect.value;
-
-  return allQuestions.filter((question) => {
-    const matchesTopic =
-      selectedTopic === "alle" ||
-      (selectedTopic === "sinnesorgane" &&
-        (question.subject === "auge" || question.subject === "ohr")) ||
-      question.subject === selectedTopic;
-
-    const matchesGroup =
-      selectedGroup === "alle" ||
-      question.group === selectedGroup;
-
-    return matchesTopic && matchesGroup;
-  });
-}
-
-function createQuizQuestion(question, mode, availableQuestions) {
-  const quizQuestion = {
-    ...question,
-    mode
-  };
-
-  if (question.sourceKind === "term") {
-    const answerDirection =
-      Math.random() < 0.5 ? "fachbegriff" : "deutsch";
-
-    quizQuestion.answerDirection = answerDirection;
-
-    if (answerDirection === "fachbegriff") {
-      quizQuestion.question =
-        `Wie lautet der Fachbegriff für „${question.de}“?`;
-      quizQuestion.correctAnswer = question.fachbegriff;
-      quizQuestion.acceptedAnswers = [
-        question.fachbegriff,
-        ...question.alternatives
-      ];
-    } else {
-      quizQuestion.question = `Was bedeutet „${question.fachbegriff}“?`;
-      quizQuestion.correctAnswer = question.de;
-      quizQuestion.acceptedAnswers = [question.de];
-    }
-  }
-
-  quizQuestion.options =
-    mode === "multiple-choice"
-      ? createAnswerOptions(quizQuestion, availableQuestions)
-      : [];
-
-  return quizQuestion;
-}
-
-function createAnswerOptions(correctQuestion, availableQuestions) {
-  if (correctQuestion.predefinedOptions.length >= 4) {
-    return shuffleArray([...correctQuestion.predefinedOptions]);
-  }
-
-  const isTermQuestion = correctQuestion.sourceKind === "term";
-  const answerField =
-    correctQuestion.answerDirection === "deutsch"
-      ? "de"
-      : "fachbegriff";
-  const eligibleQuestions = isTermQuestion
-    ? availableQuestions.filter((question) => {
-        return question.sourceKind === "term";
-      })
-    : availableQuestions;
-
-  const sameSubjectAndGroup = eligibleQuestions.filter((question) => {
-    return (
-      question.subject === correctQuestion.subject &&
-      question.group === correctQuestion.group &&
-      question.uid !== correctQuestion.uid
-    );
-  });
-
-  const sameGroup = eligibleQuestions.filter((question) => {
-    return (
-      question.group === correctQuestion.group &&
-      question.uid !== correctQuestion.uid
-    );
-  });
-
-  const sameSubject = eligibleQuestions.filter((question) => {
-    return (
-      question.subject === correctQuestion.subject &&
-      question.uid !== correctQuestion.uid
-    );
-  });
-
-  const fallback = eligibleQuestions.filter((question) => {
-    return question.uid !== correctQuestion.uid;
-  });
-
-  const answerPool = [
-    ...shuffleArray(sameSubjectAndGroup),
-    ...shuffleArray(sameSubject),
-    ...shuffleArray(sameGroup),
-    ...shuffleArray(fallback)
-  ];
-
-  const wrongAnswers = answerPool
-    .map((question) => {
-      return isTermQuestion
-        ? question[answerField]
-        : question.correctAnswer;
-    })
-    .filter(Boolean)
-    .filter((answer) => {
-      return normalizeAnswer(answer) !==
-        normalizeAnswer(correctQuestion.correctAnswer);
-    })
-    .filter((answer, index, array) => {
-      return array.findIndex((item) => {
-        return normalizeAnswer(item) === normalizeAnswer(answer);
-      }) === index;
-    })
-    .slice(0, 3);
-
-  return shuffleArray([
-    correctQuestion.correctAnswer,
-    ...wrongAnswers
-  ]);
+  selectTopicButton(topic);
+  updateCategoryOptions(topic);
 }
 
 function startQuiz() {
-  const selectedMode = modeSelect.value;
-  const selectedAmount = Number(amountSelect.value);
-  const filteredQuestions = getFilteredQuestions();
+  const filteredQuestions = getFilteredQuestions(
+    allQuestions,
+    selectedTopic,
+    elements.categorySelect.value
+  );
 
   if (filteredQuestions.length === 0) {
-    feedbackElement.className = "feedback wrong";
-    feedbackElement.textContent = "Für diese Auswahl sind keine Fragen vorhanden.";
+    elements.feedback.className = "feedback wrong";
+    elements.feedback.textContent = "Für diese Auswahl sind keine Fragen vorhanden.";
     return;
   }
 
-  const selectedQuestions = shuffleArray(filteredQuestions)
-    .slice(0, Math.min(selectedAmount, filteredQuestions.length));
-
-  quizQuestions = selectedQuestions.map((question) => {
-    const mode = getQuestionMode(question, selectedMode);
-
-    return createQuizQuestion(
-      question,
-      mode,
-      question.sourceKind === "term"
-        ? allQuestions
-        : filteredQuestions
-    );
-  });
-
+  quizQuestions = buildQuiz(
+    filteredQuestions,
+    allQuestions,
+    elements.modeSelect.value,
+    Number(elements.amountSelect.value)
+  );
   currentQuestionIndex = 0;
   score = 0;
-  scoreElement.textContent = score;
-
-  startScreen.hidden = true;
-  resultScreen.hidden = true;
-  quizScreen.hidden = false;
-
+  elements.score.textContent = score;
+  showQuizScreen();
   showQuestion();
 }
 
 function showQuestion() {
-  const question = quizQuestions[currentQuestionIndex];
-
   answerChecked = false;
-  feedbackElement.textContent = "";
-  feedbackElement.className = "feedback";
-
-  checkButton.hidden = false;
-  nextButton.hidden = true;
-
-  categoryLabel.textContent = createBadgeLabel(question);
-
-  progressElement.textContent =
-    `Frage ${currentQuestionIndex + 1} von ${quizQuestions.length}`;
-
-  progressBar.style.width =
-    `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`;
-
-  questionElement.textContent = question.question;
-
-  if (question.mode === "multiple-choice") {
-    questionTypeElement.textContent = "Wähle die richtige Antwort.";
-    renderMultipleChoice(question);
-  } else {
-    questionTypeElement.textContent = "Schreibe die richtige Antwort aus.";
-    renderTextInput();
-  }
-}
-
-function createBadgeLabel(question) {
-  if (question.subject === "pflege") {
-    const group = GROUP_LABELS[question.group] ?? question.group;
-    return `Pflege · ${group}`;
-  }
-
-  if (question.subject === "sturz") {
-    const group = GROUP_LABELS[question.group] ?? question.group;
-    return `Sturzprophylaxe · ${group}`;
-  }
-
-  const topic = question.subject === "auge" ? "Auge" : "Ohr";
-  const group = GROUP_LABELS[question.group] ?? question.group;
-
-  return `${topic} · ${group}`;
-}
-
-function renderMultipleChoice(question) {
-  answerArea.innerHTML = "";
-
-  question.options.forEach((option, index) => {
-    const label = document.createElement("label");
-    label.className = "answer-option";
-
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = "answer";
-    input.value = option;
-    input.id = `answer-${index}`;
-
-    const text = document.createElement("span");
-    text.textContent = option;
-
-    label.append(input, text);
-    answerArea.append(label);
-  });
-}
-
-function renderTextInput() {
-  answerArea.innerHTML = `
-    <input
-      class="text-answer"
-      id="text-answer"
-      type="text"
-      placeholder="Antwort eingeben"
-      autocomplete="off"
-    >
-  `;
-
-  document.querySelector("#text-answer").focus();
-}
-
-function getUserAnswer(question) {
-  if (question.mode === "multiple-choice") {
-    const selected = document.querySelector(
-      'input[name="answer"]:checked'
-    );
-
-    return selected ? selected.value : "";
-  }
-
-  return document.querySelector("#text-answer").value;
-}
-
-function isCorrectAnswer(userAnswer, question) {
-  const acceptedAnswers =
-    question.acceptedAnswers.length > 0
-      ? question.acceptedAnswers
-      : [question.correctAnswer];
-
-  return acceptedAnswers.some((answer) => {
-    return normalizeAnswer(answer) === normalizeAnswer(userAnswer);
-  });
+  renderQuestion(
+    quizQuestions[currentQuestionIndex],
+    currentQuestionIndex,
+    quizQuestions.length
+  );
 }
 
 function checkAnswer() {
-  if (answerChecked) {
-    return;
-  }
+  if (answerChecked) return;
 
   const question = quizQuestions[currentQuestionIndex];
   const userAnswer = getUserAnswer(question);
 
   if (!userAnswer.trim()) {
-    feedbackElement.className = "feedback wrong";
-    feedbackElement.textContent =
-      question.mode === "multiple-choice"
-        ? "Wähle zuerst eine Antwort aus."
-        : "Gib zuerst eine Antwort ein.";
+    elements.feedback.className = "feedback wrong";
+    elements.feedback.textContent = question.mode === "multiple-choice"
+      ? "Wähle zuerst eine Antwort aus."
+      : "Gib zuerst eine Antwort ein.";
     return;
   }
 
   answerChecked = true;
-  const correct = isCorrectAnswer(userAnswer, question);
-
-  if (correct) {
+  if (isCorrectAnswer(userAnswer, question)) {
     score++;
-    scoreElement.textContent = score;
-    feedbackElement.className = "feedback correct";
-    feedbackElement.innerHTML =
+    elements.score.textContent = score;
+    elements.feedback.className = "feedback correct";
+    elements.feedback.innerHTML =
       `<strong>Richtig.</strong> ${escapeHtml(question.explanation)}`;
   } else {
-    feedbackElement.className = "feedback wrong";
-    feedbackElement.innerHTML =
+    elements.feedback.className = "feedback wrong";
+    elements.feedback.innerHTML =
       `<strong>Falsch.</strong> Richtig ist: ` +
       `<strong>${escapeHtml(question.correctAnswer)}</strong>. ` +
       `${escapeHtml(question.explanation)}`;
   }
 
   disableInputs();
-
-  checkButton.hidden = true;
-  nextButton.hidden = false;
-  nextButton.textContent =
-    currentQuestionIndex === quizQuestions.length - 1
-      ? "Ergebnis anzeigen"
-      : "Nächste Frage";
-}
-
-function disableInputs() {
-  answerArea.querySelectorAll("input").forEach((input) => {
-    input.disabled = true;
-  });
+  elements.checkButton.hidden = true;
+  elements.nextButton.hidden = false;
+  elements.nextButton.textContent = currentQuestionIndex === quizQuestions.length - 1
+    ? "Ergebnis anzeigen"
+    : "Nächste Frage";
 }
 
 function nextQuestion() {
   currentQuestionIndex++;
-
   if (currentQuestionIndex < quizQuestions.length) {
     showQuestion();
-    return;
+  } else {
+    showResult(selectedTopic, score, quizQuestions.length);
   }
-
-  showResult();
-}
-
-function showResult() {
-  quizScreen.hidden = true;
-  resultScreen.hidden = false;
-
-  const percentage = Math.round(
-    (score / quizQuestions.length) * 100
-  );
-
-  resultText.textContent =
-    `${TOPIC_LABELS[selectedTopic]}: Du hast ${score} von ` +
-    `${quizQuestions.length} Fragen richtig beantwortet (${percentage} %).`;
 }
 
 function resetToStart() {
-  quizScreen.hidden = true;
-  resultScreen.hidden = true;
-  startScreen.hidden = false;
-
+  showStartScreen();
   score = 0;
-  scoreElement.textContent = score;
+  elements.score.textContent = score;
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+async function initialize() {
+  updateCategoryOptions(selectedTopic);
+
+  try {
+    allQuestions = await loadQuizData();
+    elements.startButton.disabled = false;
+    elements.startButton.textContent = "Quiz starten";
+  } catch (error) {
+    elements.startButton.disabled = true;
+    elements.startButton.textContent = "Quizdaten fehlen";
+    elements.startScreen.insertAdjacentHTML(
+      "beforeend",
+      `<p class="feedback wrong">${escapeHtml(error.message)}<br>` +
+      `Starte das Projekt über einen lokalen Server, zum Beispiel mit Live Server.</p>`
+    );
+    console.error(error);
+  }
 }
 
-topicButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    selectTopic(button.dataset.topic);
-  });
+elements.topicButtons.forEach((button) => {
+  button.addEventListener("click", () => selectTopic(button.dataset.topic));
 });
-
-startButton.addEventListener("click", startQuiz);
-checkButton.addEventListener("click", checkAnswer);
-nextButton.addEventListener("click", nextQuestion);
-quitButton.addEventListener("click", resetToStart);
-restartButton.addEventListener("click", resetToStart);
+elements.startButton.addEventListener("click", startQuiz);
+elements.checkButton.addEventListener("click", checkAnswer);
+elements.nextButton.addEventListener("click", nextQuestion);
+elements.quitButton.addEventListener("click", resetToStart);
+elements.restartButton.addEventListener("click", resetToStart);
 
 document.addEventListener("keydown", (event) => {
-  if (quizScreen.hidden) {
-    return;
-  }
-
-  if (event.key === "Enter") {
-    if (!nextButton.hidden) {
-      nextQuestion();
-    } else {
-      checkAnswer();
-    }
-  }
+  if (elements.quizScreen.hidden || event.key !== "Enter") return;
+  if (!elements.nextButton.hidden) nextQuestion();
+  else checkAnswer();
 });
 
-updateCategoryOptions();
-loadQuizData();
+initialize();
