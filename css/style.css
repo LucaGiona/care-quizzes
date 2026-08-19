@@ -5,6 +5,7 @@
   --muted: #66727f;
   --border: #d7e0e8;
   --primary: #245a78;
+  --primary-two: rgba(154, 127, 9, 0.847);
   --primary-dark: #193f55;
   --disabled: #9aa5ae;
   --shadow: 0 18px 50px rgba(32, 54, 70, 0.12);
@@ -45,11 +46,11 @@ body {
 
 .eyebrow {
   margin: 0 0 10px;
-  color: var(--primary);
-  font-size: 0.8rem;
+  color: var(--primary-two);
+  font-size: 0.9rem;
   font-weight: 800;
   letter-spacing: 0.09em;
-  text-transform: uppercase;
+ 
 }
 
 h1,
