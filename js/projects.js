@@ -13,4 +13,20 @@ const projects = [
     status: "verfügbar",
     href: "./frau-f-muss-umziehen/index.html",
   },
+  {
+    title: "HNO",
+    description:
+      "Quiz rund um Hals-Nasen-Ohren-Heilkunde.",
+    topics: [],
+    status: "in",
+    href: "./hno/index.html",
+  },
+  {
+    title: "Fachbegriffe",
+    description:
+      "Quiz rund um Hals-Nasen-Ohren-Heilkunde.",
+    topics: [],
+    status: "in",
+    href: "./begriffe/index.html",
+  },
 ];
