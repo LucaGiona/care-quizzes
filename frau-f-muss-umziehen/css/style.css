@@ -8,6 +8,9 @@
   --primary-dark: #193f55;
   --disabled: #9aa5ae;
   --shadow: 0 18px 50px rgba(32, 54, 70, 0.12);
+  --claude-orange: #d97757;
+  --claude-orange-light: #f0a875;
+  --claude-orange-dark: #b85c3e;
 }
 
 * {
@@ -89,6 +92,18 @@ h1 {
   box-shadow: var(--shadow);
 }
 
+.version-card--claude {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(
+        135deg,
+        var(--claude-orange-light),
+        var(--claude-orange-dark)
+      )
+      border-box;
+}
+
 .version-label {
   display: inline-flex;
   align-self: flex-start;
@@ -142,6 +157,23 @@ h1 {
 .button:hover {
   background: var(--primary-dark);
   transform: translateY(-1px);
+}
+
+.button--claude {
+  background: linear-gradient(
+    135deg,
+    var(--claude-orange-light),
+    var(--claude-orange-dark)
+  );
+  border-color: var(--claude-orange-dark);
+}
+
+.button--claude:hover {
+  background: linear-gradient(
+    135deg,
+    var(--claude-orange),
+    var(--claude-orange-dark)
+  );
 }
 
 .button-disabled {
