@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "bereich": "auge",
+    "thema": "thema",
+    "kategorie": "kategorie",
+    "typ": "multiple-choice",
+    "frage": "Frage hier eintragen",
+    "antworten": [
+      "Antwort A",
+      "Antwort B",
+      "Antwort C",
+      "Antwort D"
+    ],
+    "richtigeAntwort": "Antwort A",
+    "erklaerung": "Kurze Erklärung, warum die Antwort richtig ist.",
+    "quelleSeite": null
+  }
+]

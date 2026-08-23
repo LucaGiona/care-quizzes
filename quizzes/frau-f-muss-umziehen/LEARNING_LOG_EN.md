@@ -4,7 +4,7 @@
 
 This file documents the progress of the project: goal, AI/tools used, prompt, outcome, difficulties, solution, lessons learned.
 
-The template for new entries is in `templates/entry-template_EN.md`.
+The template for new entries is in `../../templates/entry-template_EN.md`.
 
 **Translate through AI**
 
@@ -148,4 +148,4 @@ For free-text input, further options should be considered, such as handling typo
 
 ---
 
-*Template for new entries: see `templates/entry-template_EN.md`.*
+*Template for new entries: see `../../templates/entry-template_EN.md`.*

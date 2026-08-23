@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "kategorie": "anatomie",
+    "de": "Deutscher Begriff",
+    "fachbegriff": "Fachbegriff",
+    "alternativen": [
+      "Alternative Schreibweise"
+    ],
+    "erklaerung": "Kurze fachliche Erklärung zum Begriff."
+  }
+]

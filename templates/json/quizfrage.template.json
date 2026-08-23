@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1,
+    "thema": "thema",
+    "kategorie": "kategorie",
+    "typ": "multiple-choice",
+    "frage": "Frage hier eintragen",
+    "antworten": [
+      "Antwort A",
+      "Antwort B",
+      "Antwort C",
+      "Antwort D"
+    ],
+    "richtigeAntwort": "Antwort A",
+    "erklaerung": "Kurze Erklärung, warum die Antwort richtig ist.",
+    "quelleSeite": null
+  },
+  {
+    "id": 2,
+    "thema": "thema",
+    "kategorie": "kategorie",
+    "typ": "text",
+    "frage": "Textfrage hier eintragen",
+    "akzeptierteAntworten": [
+      "Richtige Antwort",
+      "Alternative richtige Antwort"
+    ],
+    "erklaerung": "Kurze Erklärung zur richtigen Antwort.",
+    "quelleSeite": null
+  }
+]

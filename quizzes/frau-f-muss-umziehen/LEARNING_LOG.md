@@ -4,7 +4,7 @@
 
 In dieser Datei wird die Entwicklung des Projekts dokumentiert: Ziel, verwendete KI/Werkzeuge, Prompt, Ergebnis, Schwierigkeiten, Lösung, Erkenntnisse.
 
-Die Vorlage für neue Einträge liegt in `templates/entry-template.md`.
+Die Vorlage für neue Einträge liegt in `../../templates/entry-template.md`.
 
 ---
 
@@ -149,4 +149,4 @@ Bei den Texteingaben sollten noch weiter Möglichkeiten, wie Schreibfehler und S
 
 ---
 
-*Vorlage für neue Einträge: siehe `templates/entry-template.md`.*
+*Vorlage für neue Einträge: siehe `../../templates/entry-template.md`.*
