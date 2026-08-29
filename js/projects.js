@@ -39,20 +39,20 @@ const projects = [
   },
   {
     title: "Gefäße",
-    description: "Kommendes Lernquiz zu Blutgefäßen und Gefäßerkrankungen.",
+    description: "Lernquiz zu Blutgefäßen und Gefäßerkrankungen.",
     topics: ["Anatomie", "Arterien und Venen", "Gefäßerkrankungen", "Pflege"],
-    status: "in", date: "29.08.2026", href: "./quizzes/gefaesse/index.html",
+    status: "verfügbar", date: "29.08.2026", href: "./quizzes/gefaesse/index.html",
   },
   {
     title: "Blut",
-    description: "Kommendes Lernquiz zu Blutbestandteilen, Blutbildung und Gerinnung.",
+    description: "Lernquiz zu Blutbestandteilen, Blutbildung und Gerinnung.",
     topics: ["Blutbestandteile", "Blutbildung", "Gerinnung", "Erkrankungen"],
-    status: "in", date: "29.08.2026", href: "./quizzes/blut/index.html",
+    status: "verfügbar", date: "29.08.2026", href: "./quizzes/blut/index.html",
   },
   {
     title: "Herz",
-    description: "Kommendes Lernquiz zu Anatomie, Funktion und Erkrankungen des Herzens.",
+    description: "Lernquiz zu Anatomie, Funktion und Erkrankungen des Herzens.",
     topics: ["Anatomie", "Herzzyklus", "Erregungsleitung", "Herzerkrankungen", "Pflege"],
-    status: "in", date: "29.08.2026", href: "./quizzes/herz/index.html",
+    status: "verfügbar", date: "29.08.2026", href: "./quizzes/herz/index.html",
   },
 ];
