@@ -33,8 +33,8 @@ const projects = [
     title: "Niere",
     description:
       "Quiz rund um Anatomie, Physiologie und Erkrankungen der Niere.",
-    topics: [],
-    status: "in",
+    topics: ["Anatomie", "Physiologie", "Niereninsuffizienz", "Dialyse"],
+    status: "verfügbar",
     href: "./quizzes/niere/index.html",
   },
 ];
