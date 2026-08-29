@@ -15,6 +15,13 @@ function createProjectCard(project) {
   description.textContent = project.description;
   article.appendChild(description);
 
+  if (project.date) {
+    const date = document.createElement("p");
+    date.className = "project-date";
+    date.textContent = `Projektstart: ${project.date}`;
+    article.appendChild(date);
+  }
+
   if (project.topics && project.topics.length > 0) {
     const list = document.createElement("ul");
     project.topics.forEach((topic) => {

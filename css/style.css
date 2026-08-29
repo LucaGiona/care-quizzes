@@ -112,6 +112,8 @@ h1 {
   line-height: 1.6;
 }
 
+.project-card .project-date { margin-bottom: 8px; color: var(--primary-dark); font-size: 0.9rem; font-weight: 750; }
+
 .project-card ul {
   margin: 8px 0 28px;
   padding-left: 20px;
