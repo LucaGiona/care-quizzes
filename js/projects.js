@@ -29,4 +29,12 @@ const projects = [
     status: "in",
     href: "./quizzes/begriffe/index.html",
   },
+  {
+    title: "Niere",
+    description:
+      "Quiz rund um Anatomie, Physiologie und Erkrankungen der Niere.",
+    topics: [],
+    status: "in",
+    href: "./quizzes/niere/index.html",
+  },
 ];
