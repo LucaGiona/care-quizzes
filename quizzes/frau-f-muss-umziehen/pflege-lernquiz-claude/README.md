@@ -78,3 +78,11 @@ Der Bereich-Schalter passt sich an das gewählte Thema an:
 
 Die JavaScript-Datei normalisiert beide Formate beim Laden auf ein gemeinsames
 internes Fragenformat.
+
+## Texteingabe ohne Antwort
+
+Wer bei einer Texteingabe-Frage die Lösung nicht kennt, kann das Feld leer
+lassen und Enter drücken (oder auf "Antwort prüfen" klicken). Die Frage
+wird dann als falsch gewertet und die richtige Antwort inkl. Erklärung
+direkt angezeigt, statt eine Eingabe zu erzwingen. Bei Multiple-Choice-Fragen
+muss weiterhin eine Option ausgewählt werden.

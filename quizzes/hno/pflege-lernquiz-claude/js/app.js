@@ -27,46 +27,39 @@ const reviewList = document.querySelector("#review-list");
 const GROUP_LABELS = {
   anatomie: "Anatomie",
   erkrankung: "Erkrankungen",
-  pflegeversicherung: "Pflegeversicherung",
-  pflegegrade: "Pflegegrade",
-  leistungen: "Leistungen",
-  entlassungsmanagement: "Entlassungsmanagement",
-  risikofaktoren: "Risikofaktoren",
-  einschaetzung: "Einschätzung",
-  beratung: "Beratung",
-  mobilitaet: "Mobilität",
-  umgebung: "Umgebung",
-  hilfsmittel: "Hilfsmittel",
-  medikation: "Medikation",
-  alltag: "Alltag",
-  nach_sturz: "Nach einem Sturz",
-  grundsaetze: "Grundsätze",
-  umgang_hoerbeeintraechtigung: "Umgang mit Hörbeeinträchtigung",
-  umgang_sehbeeintraechtigung: "Umgang mit Sehbeeinträchtigung",
-  augenmedikamente: "Augenmedikamente",
-  augenerkrankungen: "Augenerkrankungen",
-  traenenwege: "Tränenwege",
-  pupillenreaktion: "Pupillenreaktion",
-  presbyakusis: "Presbyakusis",
-  wohnformen: "Wohnformen",
-  kurzzeitpflege: "Kurzzeitpflege",
-  pflegebeduerftigkeit: "Pflegebedürftigkeit"
+  aufbau: "Aufbau",
+  nebenhoehlen: "Nasennebenhöhlen",
+  feinbau: "Feinbau",
+  gefaesse_nerven: "Gefäße & Nerven",
+  funktionen: "Funktionen",
+  patho: "Krankheitslehre",
+  abschnitte: "Rachenabschnitte",
+  muskulatur_mandeln: "Muskulatur & Mandeln",
+  knorpel: "Knorpel",
+  glottis: "Glottis",
+  muskeln_feinbau: "Muskeln & Feinbau"
 };
 
 const TOPIC_LABELS = {
-  auge: "Auge",
   ohr: "Ohr",
-  sinnesorgane: "Auge & Ohr",
-  pflege: "Pflegeversicherung",
-  sturz: "Sturzprophylaxe",
+  nase: "Nase",
+  rachen: "Rachen",
+  kehlkopf: "Kehlkopf",
   alle: "Alle Themen"
 };
 
 const SUBJECT_EMOJI = {
-  auge: "👁️",
   ohr: "👂",
-  pflege: "🏥",
-  sturz: "🦯"
+  nase: "👃",
+  rachen: "👄",
+  kehlkopf: "🎤"
+};
+
+const TOPIC_GROUPS = {
+  ohr: ["anatomie", "erkrankung"],
+  nase: ["aufbau", "nebenhoehlen", "feinbau", "gefaesse_nerven", "funktionen", "patho"],
+  rachen: ["aufbau", "abschnitte", "muskulatur_mandeln", "feinbau", "gefaesse_nerven", "funktionen"],
+  kehlkopf: ["aufbau", "knorpel", "glottis", "muskeln_feinbau", "gefaesse_nerven", "funktionen", "patho"]
 };
 
 let allQuestions = [];
@@ -81,55 +74,55 @@ let answerChecked = false;
 async function loadQuizData() {
   try {
     const [
-      eyeResponse,
-      earResponse,
-      careResponse,
-      fallPreventionResponse,
-      goldenRulesResponse,
-      summaryResponse
+      ohrBegriffeResponse,
+      naseBegriffeResponse,
+      naseFragenResponse,
+      rachenBegriffeResponse,
+      rachenFragenResponse,
+      kehlkopfBegriffeResponse,
+      kehlkopfFragenResponse
     ] = await Promise.all([
-      fetch("./data/auge.json"),
-      fetch("./data/ohr.json"),
-      fetch("./data/pflegeversicherung.json"),
-      fetch("./data/sturzprophylaxe.json"),
-      fetch("./data/goldene_regeln.json"),
-      fetch("./data/lernzusammenfassung_zusatz.json")
+      fetch("./data/ohr_begriffe.json"),
+      fetch("./data/nase_begriffe.json"),
+      fetch("./data/nase_fragen.json"),
+      fetch("./data/rachen_begriffe.json"),
+      fetch("./data/rachen_fragen.json"),
+      fetch("./data/kehlkopf_begriffe.json"),
+      fetch("./data/kehlkopf_fragen.json")
     ]);
 
-    if (
-      !eyeResponse.ok ||
-      !earResponse.ok ||
-      !careResponse.ok ||
-      !fallPreventionResponse.ok ||
-      !goldenRulesResponse.ok ||
-      !summaryResponse.ok
-    ) {
+    const responses = [
+      ohrBegriffeResponse,
+      naseBegriffeResponse,
+      naseFragenResponse,
+      rachenBegriffeResponse,
+      rachenFragenResponse,
+      kehlkopfBegriffeResponse,
+      kehlkopfFragenResponse
+    ];
+
+    if (responses.some((response) => !response.ok)) {
       throw new Error("Die Quizdaten konnten nicht vollständig geladen werden.");
     }
 
     const [
-      eyeTerms,
-      earTerms,
-      careQuestions,
-      fallPreventionQuestions,
-      goldenRuleQuestions,
-      summaryQuestions
-    ] = await Promise.all([
-      eyeResponse.json(),
-      earResponse.json(),
-      careResponse.json(),
-      fallPreventionResponse.json(),
-      goldenRulesResponse.json(),
-      summaryResponse.json()
-    ]);
+      ohrBegriffe,
+      naseBegriffe,
+      naseFragen,
+      rachenBegriffe,
+      rachenFragen,
+      kehlkopfBegriffe,
+      kehlkopfFragen
+    ] = await Promise.all(responses.map((response) => response.json()));
 
     allQuestions = [
-      ...normalizeTerms(eyeTerms, "auge"),
-      ...normalizeTerms(earTerms, "ohr"),
-      ...normalizeCareQuestions(careQuestions),
-      ...normalizeFallPreventionQuestions(fallPreventionQuestions),
-      ...normalizeGoldenRuleQuestions(goldenRuleQuestions),
-      ...normalizeSummaryQuestions(summaryQuestions)
+      ...normalizeTerms(ohrBegriffe, "ohr"),
+      ...normalizeTerms(naseBegriffe, "nase"),
+      ...normalizeKnowledgeQuestions(naseFragen, "nase"),
+      ...normalizeTerms(rachenBegriffe, "rachen"),
+      ...normalizeKnowledgeQuestions(rachenFragen, "rachen"),
+      ...normalizeTerms(kehlkopfBegriffe, "kehlkopf"),
+      ...normalizeKnowledgeQuestions(kehlkopfFragen, "kehlkopf")
     ];
 
     startButton.disabled = false;
@@ -152,7 +145,7 @@ async function loadQuizData() {
 
 function normalizeTerms(terms, subject) {
   return terms.map((term) => ({
-    uid: `${subject}-${term.id}`,
+    uid: `${subject}-begriff-${term.id}`,
     subject,
     group: term.kategorie,
     subcategory: term.kategorie,
@@ -173,63 +166,16 @@ function normalizeTerms(terms, subject) {
   }));
 }
 
-function normalizeCareQuestions(questions) {
-  return normalizeKnowledgeQuestions(questions, "pflege");
-}
-
-function normalizeFallPreventionQuestions(questions) {
-  return normalizeKnowledgeQuestions(questions, "sturz", {
-    groupField: "kategorie"
-  });
-}
-
-function normalizeGoldenRuleQuestions(questions) {
-  return questions.flatMap((question) => {
-    if (question.bereich !== "auge" && question.bereich !== "ohr") {
-      console.warn("Unbekannter Bereich in goldene_regeln.json", question);
-      return [];
-    }
-
-    return normalizeKnowledgeQuestions([question], question.bereich, {
-      uidNamespace: `goldene-regeln-${question.bereich}`
-    });
-  });
-}
-
-function normalizeSummaryQuestions(questions) {
-  return questions.flatMap((question) => {
-    if (
-      question.bereich !== "auge" &&
-      question.bereich !== "ohr" &&
-      question.bereich !== "pflege"
-    ) {
-      console.warn(
-        "Unbekannter Bereich in lernzusammenfassung_zusatz.json",
-        question
-      );
-      return [];
-    }
-
-    return normalizeKnowledgeQuestions([question], question.bereich, {
-      uidNamespace: `zusatz-${question.bereich}`
-    });
-  });
-}
-
-function normalizeKnowledgeQuestions(
-  questions,
-  subject,
-  { uidNamespace = subject, groupField = "thema" } = {}
-) {
+function normalizeKnowledgeQuestions(questions, subject) {
   return questions.map((question) => {
     const acceptedAnswers =
       question.akzeptierteAntworten ??
       (question.richtigeAntwort ? [question.richtigeAntwort] : []);
 
     return {
-      uid: `${uidNamespace}-${question.id}`,
+      uid: `${subject}-frage-${question.id}`,
       subject,
-      group: question[groupField],
+      group: question.kategorie,
       subcategory: question.kategorie,
       sourceKind: "knowledge",
       originalMode: question.typ,
@@ -259,74 +205,16 @@ function selectTopic(topic) {
 }
 
 function updateCategoryOptions() {
-  const eyeGroups = [
-    "anatomie",
-    "erkrankung",
-    "umgang_sehbeeintraechtigung",
-    "augenmedikamente",
-    "augenerkrankungen",
-    "traenenwege",
-    "pupillenreaktion"
-  ];
-  const earGroups = [
-    "anatomie",
-    "erkrankung",
-    "umgang_hoerbeeintraechtigung",
-    "presbyakusis"
-  ];
-  const sensoryOrganGroups = [
-    "anatomie",
-    "erkrankung",
-    "umgang_sehbeeintraechtigung",
-    "umgang_hoerbeeintraechtigung",
-    "augenmedikamente",
-    "augenerkrankungen",
-    "traenenwege",
-    "pupillenreaktion",
-    "presbyakusis"
-  ];
-  const careGroups = [
-    "pflegeversicherung",
-    "pflegegrade",
-    "leistungen",
-    "entlassungsmanagement",
-    "wohnformen",
-    "kurzzeitpflege",
-    "pflegebeduerftigkeit"
-  ];
-  const fallPreventionGroups = [
-    "risikofaktoren",
-    "einschaetzung",
-    "beratung",
-    "mobilitaet",
-    "umgebung",
-    "hilfsmittel",
-    "medikation",
-    "alltag",
-    "nach_sturz",
-    "grundsaetze"
-  ];
+  let groups = TOPIC_GROUPS[selectedTopic];
 
-  let groups = eyeGroups;
-
-  if (selectedTopic === "ohr") {
-    groups = earGroups;
-  }
-
-  if (selectedTopic === "sinnesorgane") {
-    groups = sensoryOrganGroups;
-  }
-
-  if (selectedTopic === "pflege") {
-    groups = careGroups;
-  }
-
-  if (selectedTopic === "sturz") {
-    groups = fallPreventionGroups;
-  }
-
-  if (selectedTopic === "alle") {
-    groups = [...sensoryOrganGroups, ...careGroups, ...fallPreventionGroups];
+  if (!groups) {
+    groups = [
+      ...new Set([
+        ...TOPIC_GROUPS.nase,
+        ...TOPIC_GROUPS.rachen,
+        ...TOPIC_GROUPS.kehlkopf
+      ])
+    ];
   }
 
   selectedCategory = "alle";
@@ -418,10 +306,7 @@ function getFilteredQuestions() {
 
   return allQuestions.filter((question) => {
     const matchesTopic =
-      selectedTopic === "alle" ||
-      (selectedTopic === "sinnesorgane" &&
-        (question.subject === "auge" || question.subject === "ohr")) ||
-      question.subject === selectedTopic;
+      selectedTopic === "alle" || question.subject === selectedTopic;
 
     const matchesGroup =
       selectedGroup === "alle" ||
@@ -593,18 +478,7 @@ function showQuestion() {
 
 function createBadgeLabel(question) {
   const emoji = SUBJECT_EMOJI[question.subject] ?? "";
-
-  if (question.subject === "pflege") {
-    const group = GROUP_LABELS[question.group] ?? question.group;
-    return `${emoji} Pflege · ${group}`;
-  }
-
-  if (question.subject === "sturz") {
-    const group = GROUP_LABELS[question.group] ?? question.group;
-    return `${emoji} Sturzprophylaxe · ${group}`;
-  }
-
-  const topic = question.subject === "auge" ? "Auge" : "Ohr";
+  const topic = TOPIC_LABELS[question.subject] ?? question.subject;
   const group = GROUP_LABELS[question.group] ?? question.group;
 
   return `${emoji} ${topic} · ${group}`;

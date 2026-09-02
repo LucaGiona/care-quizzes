@@ -16,10 +16,9 @@ const projects = [
   {
     title: "HNO",
     description:
-      "Quiz rund um Hals-Nasen-Ohren-Heilkunde.",
-    topics: [],
-    status: "in",
-    href: "./quizzes/hno/index.html",
+      "Quiz zu Ohr, Nase, Rachen und Kehlkopf (Hals-Nasen-Ohren-Heilkunde).",
+    topics: ["Ohr", "Nase", "Rachen", "Kehlkopf"],
+    status: "verfügbar", date: "02.09.2026", href: "./quizzes/hno/index.html",
   },
   {
     title: "Fachbegriffe",
