@@ -128,6 +128,18 @@ Innerhalb dieses Projekts können unterschiedliche Versionen derselben Anwendung
 
 Weitere technische und inhaltliche Informationen befinden sich in der dortigen `README.md`.
 
+## Bedienkonvention für ChatGPT-Quizze
+
+Für neue und bestehende ChatGPT-Quizvarianten gilt bei der Tastaturbedienung:
+
+- Bei einer Texteingabe gibt `Enter` die Antwort ab.
+- Ist das Textfeld leer, wird die Frage als falsch gewertet und die richtige Antwort mit Erklärung angezeigt.
+- Nach angezeigtem Feedback wechselt ein weiteres `Enter` zur nächsten Frage.
+- Bei Multiple Choice ist weiterhin zuerst eine Antwort auszuwählen.
+- Der Button „Antwort prüfen“ soll bei Texteingaben weiterhin eine ausgefüllte Antwort verlangen; das Überspringen ohne Eingabe ist bewusst nur über `Enter` möglich.
+
+Bei neuen ChatGPT-Apps ist diese Logik im Tastatur-Handler und in `checkAnswer(allowEmptyTextAnswer)` zu übernehmen.
+
 ## Deployment
 
 Die einzelnen Quizprojekte können unabhängig voneinander veröffentlicht werden.

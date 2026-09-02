@@ -29,15 +29,18 @@ function showQuestion() {
   renderQuestion(quizQuestions[currentQuestionIndex], currentQuestionIndex, quizQuestions.length);
 }
 
-function checkAnswer() {
+function checkAnswer(allowEmptyTextAnswer = false) {
   if (answerChecked) return;
   const question = quizQuestions[currentQuestionIndex];
   const userAnswer = getUserAnswer(question);
-  if (!userAnswer.trim()) {
+  const emptyTextAnswerAllowed = allowEmptyTextAnswer && question.mode === "text";
+
+  if (!userAnswer.trim() && !emptyTextAnswerAllowed) {
     elements.feedback.className = "feedback wrong";
     elements.feedback.textContent = question.mode === "multiple-choice" ? "Wähle zuerst eine Antwort aus." : "Gib zuerst eine Antwort ein.";
     return;
   }
+
   answerChecked = true;
   if (isCorrectAnswer(userAnswer, question)) {
     score++; elements.score.textContent = score; elements.feedback.className = "feedback correct";
@@ -71,12 +74,13 @@ async function initialize() {
 
 elements.topicButtons.forEach((button) => button.addEventListener("click", () => selectTopic(button.dataset.topic)));
 elements.startButton.addEventListener("click", startQuiz);
-elements.checkButton.addEventListener("click", checkAnswer);
+elements.checkButton.addEventListener("click", () => checkAnswer(false));
 elements.nextButton.addEventListener("click", nextQuestion);
 elements.quitButton.addEventListener("click", resetToStart);
 elements.restartButton.addEventListener("click", resetToStart);
 document.addEventListener("keydown", (event) => {
   if (elements.quizScreen.hidden || event.key !== "Enter") return;
-  if (!elements.nextButton.hidden) nextQuestion(); else checkAnswer();
+  event.preventDefault();
+  if (!elements.nextButton.hidden) nextQuestion(); else checkAnswer(true);
 });
 initialize();
